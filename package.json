@@ -20,5 +20,8 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": ["esbuild"]
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
