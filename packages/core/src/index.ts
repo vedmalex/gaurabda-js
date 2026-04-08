@@ -133,3 +133,7 @@ export { ResultToday } from './result-today.js';
 // Result: appearance day
 export { calculateAppDay } from './result-app.js';
 export type { AppDayResult } from './result-app.js';
+
+// Day events: sandhya, brahma muhurta, muhurtas
+export { calculateSandhyaTimes, calculateBrahmaMuhurta, calculateMuhurtas } from './day-events.js';
+export type { SandhyaTimes } from './day-events.js';

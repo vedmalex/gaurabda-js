@@ -6,7 +6,7 @@ import {
   getYogaName, getPaksaName,
   getFastingName, getDSTSignature, GregorianDateTime,
 } from '~/components/location-store';
-import { FastType } from '@gaurabda/core';
+import { FastType, getRasiName, calculateSandhyaTimes, calculateBrahmaMuhurta } from '@gaurabda/core';
 
 interface TodayData {
   date: string;
@@ -19,7 +19,10 @@ interface TodayData {
   tithiElapse: string;
   naksatra: string;
   naksatraElapse: string;
+  sunNaksatra: string;
+  sunRasi: string;
   yoga: string;
+  yogaElapse: string;
   paksa: string;
   masa: string;
   gaurabdaYear: number;
@@ -27,6 +30,10 @@ interface TodayData {
   fasting: string | null;
   ekadasiName: string | null;
   paranaText: string | null;
+  brahmaMuhurta: string;
+  gayatri: string;
+  savitri: string;
+  saraswati: string;
   events: string[];
 }
 
@@ -55,6 +62,15 @@ export default component$(() => {
       events.push(ev.text);
     }
 
+    // Sandhya & Brahma muhurta
+    const sandhya = calculateSandhyaTimes(sr.totalDays, astro.sunNoon.totalDays, astro.sunSet.totalDays);
+    const [bmStart, bmEnd] = calculateBrahmaMuhurta(sr.totalDays);
+    const fmtTime = (frac: number) => {
+      const h = Math.floor(frac * 24);
+      const m = Math.floor((frac * 24 - h) * 60);
+      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    };
+
     data.value = {
       date: `${day.date.day} ${GregorianDateTime.getMonthName(day.date.month)} ${day.date.year}`,
       weekday: WEEKDAYS[day.date.weekday] ?? '',
@@ -66,7 +82,10 @@ export default component$(() => {
       tithiElapse: sr.tithiElapse.toFixed(1) + '%',
       naksatra: getNaksatraName(sr.naksatra),
       naksatraElapse: sr.naksatraElapse.toFixed(1) + '%',
+      sunNaksatra: getNaksatraName(sr.sunNaksatra),
+      sunRasi: getRasiName(sr.rasiOfSun),
       yoga: getYogaName(sr.yoga),
+      yogaElapse: sr.yogaElapse.toFixed(1) + '%',
       paksa: getPaksaName(sr.paksa),
       masa: getMasaName(astro.masa),
       gaurabdaYear: astro.gaurabdaYear,
@@ -74,6 +93,10 @@ export default component$(() => {
       fasting: day.nFastID !== FastType.FAST_NULL ? getFastingName(day.nFastID) : null,
       ekadasiName: day.ekadasi_vrata_name || null,
       paranaText: day.ekadasi_parana ? 'Break fast today' : null,
+      brahmaMuhurta: `${fmtTime(bmStart)} - ${fmtTime(bmEnd)}`,
+      gayatri: `${fmtTime(sandhya.gayatriStart)} - ${fmtTime(sandhya.gayatriEnd)}`,
+      savitri: `${fmtTime(sandhya.savitriStart)} - ${fmtTime(sandhya.savitriEnd)}`,
+      saraswati: `${fmtTime(sandhya.saraswatiStart)} - ${fmtTime(sandhya.saraswatiEnd)}`,
       events,
     };
   });
@@ -129,16 +152,35 @@ export default component$(() => {
             <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
               <dt class="text-stone-400">Tithi</dt>
               <dd>{data.value.tithi} <span class="text-stone-400">({data.value.tithiElapse})</span></dd>
-              <dt class="text-stone-400">Naksatra</dt>
+              <dt class="text-stone-400">Moon Naksatra</dt>
               <dd>{data.value.naksatra} <span class="text-stone-400">({data.value.naksatraElapse})</span></dd>
+              <dt class="text-stone-400">Sun Naksatra</dt>
+              <dd>{data.value.sunNaksatra}</dd>
+              <dt class="text-stone-400">Sun Rasi</dt>
+              <dd>{data.value.sunRasi}</dd>
               <dt class="text-stone-400">Yoga</dt>
-              <dd>{data.value.yoga}</dd>
+              <dd>{data.value.yoga} <span class="text-stone-400">({data.value.yogaElapse})</span></dd>
               <dt class="text-stone-400">Paksa</dt>
               <dd>{data.value.paksa}</dd>
               <dt class="text-stone-400">Masa</dt>
               <dd>{data.value.masa}</dd>
               <dt class="text-stone-400">Gaurabda Year</dt>
               <dd>{data.value.gaurabdaYear}</dd>
+            </dl>
+          </div>
+
+          {/* Muhurta & Sandhya */}
+          <div class="bg-white rounded-lg shadow p-5">
+            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Muhurta & Sandhya</h3>
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+              <dt class="text-stone-400">Brahma Muhurta</dt>
+              <dd>{data.value.brahmaMuhurta}</dd>
+              <dt class="text-stone-400">Gayatri (sunrise)</dt>
+              <dd>{data.value.gayatri}</dd>
+              <dt class="text-stone-400">Savitri (noon)</dt>
+              <dd>{data.value.savitri}</dd>
+              <dt class="text-stone-400">Saraswati (sunset)</dt>
+              <dd>{data.value.saraswati}</dd>
             </dl>
           </div>
 

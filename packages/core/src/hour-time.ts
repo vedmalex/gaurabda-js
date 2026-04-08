@@ -84,6 +84,23 @@ export class HourTime {
     return (d - Math.floor(d)) * 100.0;
   }
 
+  /** Naksatra of the Sun (0..26) */
+  get sunNaksatra(): number {
+    let d = putIn360(this.longitude - this.ayanamsa);
+    d = (d * 3.0) / 40.0;
+    return intFloor(d);
+  }
+
+  get sunNaksatraElapse(): number {
+    let d = putIn360(this.longitude - this.ayanamsa);
+    d = (d * 3.0) / 40.0;
+    return (d - Math.floor(d)) * 100.0;
+  }
+
+  get sunNaksatraPada(): number {
+    return intFloor(this.sunNaksatraElapse / 25.0);
+  }
+
   get rasiOfSun(): number {
     return getRasi(this.longitude, this.ayanamsa);
   }
