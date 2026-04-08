@@ -4,7 +4,6 @@ import {
   loadLocation, toEarthData,
   ResultCalendar, GregorianDateTime, getMasaName, getTithiName,
   getNaksatraName, getYogaName, getPaksaName, getFastingName,
-  getDSTSignature,
 } from '~/components/location-store';
 import { FastType, matchFestivals, calculateSandhyaTimes, calculateBrahmaMuhurta } from '@gaurabda/core';
 

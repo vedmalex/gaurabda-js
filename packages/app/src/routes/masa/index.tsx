@@ -1,23 +1,44 @@
-import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
 import { type DocumentHead } from '@builder.io/qwik-city';
 import { loadLocation, toEarthData, getMasaName, GregorianDateTime } from '~/components/location-store';
 import { ResultMasaList } from '@gaurabda/core';
 
-interface MasaRow {
+interface MasaBar {
   masa: string;
   year: number;
-  start: string;
-  end: string;
+  startDay: number;  // day offset from Jan 1
+  endDay: number;
+  startLabel: string;
+  endLabel: string;
+  width: number;     // percentage
+  left: number;      // percentage
+  color: string;
+}
+
+const MASA_COLORS = [
+  'bg-rose-200', 'bg-orange-200', 'bg-amber-200', 'bg-yellow-200',
+  'bg-lime-200', 'bg-green-200', 'bg-emerald-200', 'bg-teal-200',
+  'bg-cyan-200', 'bg-sky-200', 'bg-blue-200', 'bg-indigo-200',
+  'bg-purple-300', // Adhika
+];
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function dayOfYear(d: { day: number; month: number; year: number }): number {
+  const dt = new Date(d.year, d.month - 1, d.day);
+  const jan1 = new Date(d.year, 0, 1);
+  return Math.floor((dt.getTime() - jan1.getTime()) / 86400000);
 }
 
 export default component$(() => {
-  const masas = useSignal<MasaRow[]>([]);
-  const yearLabel = useSignal('');
+  const yearVal = useSignal(new Date().getFullYear());
+  const masas = useSignal<MasaBar[]>([]);
+  const gaurabdaYear = useSignal(0);
+  const totalDays = useSignal(365);
 
-  useVisibleTask$(() => {
-    const now = new Date();
-    const y = now.getFullYear();
-    yearLabel.value = y.toString();
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ track }) => {
+    const y = track(() => yearVal.value);
 
     const stored = loadLocation();
     const earth = toEarthData(stored);
@@ -25,20 +46,103 @@ export default component$(() => {
     const rml = new ResultMasaList();
     rml.calculateMasaList(earth, y, 1);
 
-    masas.value = rml.entries.map(e => ({
-      masa: getMasaName(e.masa),
-      year: e.year,
-      start: `${e.vcStart.day} ${GregorianDateTime.getMonthAbreviation(e.vcStart.month)}`,
-      end: `${e.vcEnd.day} ${GregorianDateTime.getMonthAbreviation(e.vcEnd.month)}`,
-    }));
+    const isLeap = GregorianDateTime.isLeapYear(y);
+    const total = isLeap ? 366 : 365;
+    totalDays.value = total;
+
+    if (rml.entries.length > 0) {
+      gaurabdaYear.value = rml.entries[0].year;
+    }
+
+    masas.value = rml.entries.map((e) => {
+      const s = dayOfYear({ day: e.vcStart.day, month: e.vcStart.month, year: y });
+      let en = dayOfYear({ day: e.vcEnd.day, month: e.vcEnd.month, year: e.vcEnd.year });
+      // If end is in next year, clamp to 365
+      if (e.vcEnd.year > y) en = total;
+      // If start is before this year, clamp to 0
+      const startClamped = e.vcStart.year < y ? 0 : Math.max(0, s);
+      const endClamped = Math.min(total, en);
+
+      return {
+        masa: getMasaName(e.masa),
+        year: e.year,
+        startDay: startClamped,
+        endDay: endClamped,
+        startLabel: `${e.vcStart.day} ${MONTH_NAMES[e.vcStart.month - 1]}`,
+        endLabel: `${e.vcEnd.day} ${MONTH_NAMES[e.vcEnd.month - 1]}`,
+        width: ((endClamped - startClamped) / total) * 100,
+        left: (startClamped / total) * 100,
+        color: MASA_COLORS[e.masa % MASA_COLORS.length],
+      };
+    });
+  });
+
+  const goPrev = $((): void => { yearVal.value--; });
+  const goNext = $((): void => { yearVal.value++; });
+
+  // Month grid markers
+  const monthMarkers = MONTH_NAMES.map((name, i) => {
+    const d = new Date(yearVal.value, i, 1);
+    const jan1 = new Date(yearVal.value, 0, 1);
+    const offset = Math.floor((d.getTime() - jan1.getTime()) / 86400000);
+    return { name, left: (offset / totalDays.value) * 100 };
   });
 
   return (
     <div>
-      <h2 class="text-2xl font-bold mb-2">Masa List</h2>
-      <p class="text-sm text-stone-500 mb-6">Gaurabda year {yearLabel.value}</p>
+      {/* Header */}
+      <div class="flex items-center justify-between mb-6">
+        <button onClick$={goPrev} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&larr;</button>
+        <div class="text-center">
+          <h2 class="text-2xl font-bold">{yearVal.value}</h2>
+          {gaurabdaYear.value > 0 && <p class="text-sm text-stone-500">Gaurabda {gaurabdaYear.value}</p>}
+        </div>
+        <button onClick$={goNext} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&rarr;</button>
+      </div>
 
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      {/* Timeline visualization */}
+      <div class="bg-white rounded-lg shadow p-5">
+        {/* Month labels */}
+        <div class="relative h-6 mb-1">
+          {monthMarkers.map(m => (
+            <div
+              key={m.name}
+              class="absolute text-[10px] text-stone-400 font-medium"
+              style={{ left: `${m.left}%` }}
+            >
+              {m.name}
+            </div>
+          ))}
+        </div>
+
+        {/* Month grid lines */}
+        <div class="relative h-2 border-b border-stone-200 mb-4">
+          {monthMarkers.map(m => (
+            <div
+              key={m.name}
+              class="absolute top-0 bottom-0 border-l border-stone-200"
+              style={{ left: `${m.left}%` }}
+            />
+          ))}
+        </div>
+
+        {/* Masa bars */}
+        <div class="space-y-2">
+          {masas.value.map((m, i) => (
+            <div key={i} class="relative h-10">
+              <div
+                class={['absolute top-0 bottom-0 rounded-md flex items-center px-2 overflow-hidden', m.color]}
+                style={{ left: `${m.left}%`, width: `${Math.max(m.width, 2)}%` }}
+              >
+                <span class="text-xs font-medium truncate text-stone-800">{m.masa}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Table view */}
+      <div class="bg-white rounded-lg shadow overflow-hidden mt-6">
         <table class="w-full text-sm">
           <thead>
             <tr class="bg-stone-100 text-left text-xs font-semibold text-stone-500 uppercase">
@@ -46,24 +150,25 @@ export default component$(() => {
               <th class="px-4 py-2">Gaurabda</th>
               <th class="px-4 py-2">Start</th>
               <th class="px-4 py-2">End</th>
+              <th class="px-4 py-2">Days</th>
             </tr>
           </thead>
           <tbody>
             {masas.value.map((m, i) => (
               <tr key={i} class="border-t hover:bg-stone-50">
-                <td class="px-4 py-2 font-medium">{m.masa}</td>
+                <td class="px-4 py-2">
+                  <span class={['inline-block w-3 h-3 rounded-sm mr-2', m.color]} />
+                  <span class="font-medium">{m.masa}</span>
+                </td>
                 <td class="px-4 py-2 text-stone-500">{m.year}</td>
-                <td class="px-4 py-2">{m.start}</td>
-                <td class="px-4 py-2">{m.end}</td>
+                <td class="px-4 py-2">{m.startLabel}</td>
+                <td class="px-4 py-2">{m.endLabel}</td>
+                <td class="px-4 py-2 text-stone-500">{m.endDay - m.startDay}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {masas.value.length === 0 && (
-        <p class="text-stone-400 mt-4">Loading masa list...</p>
-      )}
     </div>
   );
 });
