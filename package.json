@@ -7,10 +7,10 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "pnpm --filter @gaurabda/core build",
+    "build": "pnpm --filter @gaurabda/core build && pnpm --filter @gaurabda/location build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --build",
+    "typecheck": "pnpm --filter @gaurabda/core typecheck && pnpm --filter @gaurabda/location typecheck",
     "ci": "pnpm typecheck && pnpm test && pnpm build"
   },
   "devDependencies": {

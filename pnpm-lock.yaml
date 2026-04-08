@@ -24,6 +24,16 @@ importers:
         specifier: ^4.5.0
         version: 4.5.4(rollup@4.60.1)(typescript@5.9.3)(vite@6.4.2)
 
+  packages/location:
+    dependencies:
+      '@gaurabda/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      vite-plugin-dts:
+        specifier: ^4.5.0
+        version: 4.5.4(rollup@4.60.1)(typescript@5.9.3)(vite@6.4.2)
+
 packages:
 
   '@babel/helper-string-parser@7.27.1':
