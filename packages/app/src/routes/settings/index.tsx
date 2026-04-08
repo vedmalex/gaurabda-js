@@ -29,14 +29,13 @@ export default component$(() => {
   });
 
   // Initialize Leaflet map
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ track }) => {
     const loc = track(() => currentLocation.value);
     const el = mapContainer.value;
     if (!el || !loc) return;
 
-    // Dynamic import to avoid SSR issues
     import('leaflet').then((L) => {
-      // Add Leaflet CSS
       if (!document.getElementById('leaflet-css')) {
         const link = document.createElement('link');
         link.id = 'leaflet-css';
@@ -45,9 +44,7 @@ export default component$(() => {
         document.head.appendChild(link);
       }
 
-      // Clear previous map
       el.innerHTML = '';
-
       const map = L.map(el).setView([loc.lat, loc.lon], 10);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap',
@@ -55,36 +52,28 @@ export default component$(() => {
 
       const marker = L.marker([loc.lat, loc.lon], { draggable: true }).addTo(map);
 
-      // Click on map to move marker
+      const onCoords = (lat: number, lon: number) => {
+        const nearest = findNearestCity(lat, lon);
+        const stored: StoredLocation = {
+          city: nearest.distanceKm < 50 ? nearest.location.city : `${lat.toFixed(2)}, ${lon.toFixed(2)}`,
+          lat, lon, tz: nearest.location.timezone.name,
+        };
+        saveLocation(stored);
+        currentLocation.value = stored;
+        saved.value = true;
+        setTimeout(() => { saved.value = false; }, 2000);
+      };
+
       map.on('click', (e: L.LeafletMouseEvent) => {
         marker.setLatLng(e.latlng);
-        applyMapCoords(e.latlng.lat, e.latlng.lng);
+        onCoords(e.latlng.lat, e.latlng.lng);
       });
-
-      // Drag marker
       marker.on('dragend', () => {
         const pos = marker.getLatLng();
-        applyMapCoords(pos.lat, pos.lng);
+        onCoords(pos.lat, pos.lng);
       });
     });
   });
-
-  const applyMapCoords = (lat: number, lon: number) => {
-    const nearest = findNearestCity(lat, lon);
-    const stored: StoredLocation = {
-      city: nearest.distanceKm < 50 ? nearest.location.city : `${lat.toFixed(2)}, ${lon.toFixed(2)}`,
-      lat, lon,
-      tz: nearest.location.timezone.name,
-    };
-    saveLocation(stored);
-    currentLocation.value = stored;
-    showSaved();
-  };
-
-  const showSaved = () => {
-    saved.value = true;
-    setTimeout(() => { saved.value = false; }, 2000);
-  };
 
   const doSearch = $(() => {
     if (query.value.length < 2) { results.value = []; return; }
@@ -102,7 +91,8 @@ export default component$(() => {
     currentLocation.value = stored;
     results.value = [];
     query.value = '';
-    showSaved();
+    saved.value = true;
+    setTimeout(() => { saved.value = false; }, 2000);
   });
 
   const detectGPS = $(async () => {
@@ -120,7 +110,8 @@ export default component$(() => {
       saveLocation(stored);
       currentLocation.value = stored;
       gpsStatus.value = 'idle';
-      showSaved();
+      saved.value = true;
+      setTimeout(() => { saved.value = false; }, 2000);
     } catch (e: any) {
       gpsStatus.value = 'error';
       gpsError.value = e?.message ?? 'GPS unavailable';
