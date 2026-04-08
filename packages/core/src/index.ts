@@ -113,3 +113,13 @@ export { ResultCoreEvents } from './result-core-events.js';
 export { ResultMasaList } from './result-masa-list.js';
 export type { MasaEntry } from './result-masa-list.js';
 export { ResultCalendar } from './result-calendar.js';
+
+// Timezone
+export { TimeZone } from './timezone.js';
+export type { DstDescriptor } from './timezone.js';
+
+// Country
+export { getCountryName, getCountryContinentName, getCountryByISOCode, getCountryByName, getAllCountries, getContinentName } from './country.js';
+
+// Location
+export { Location } from './location.js';
