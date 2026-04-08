@@ -1,20 +1,15 @@
-// Planetary positions: Rahu (North Node) and Ketu (South Node)
-// Plus wrapper for all graha longitudes at sunrise
+// All 9 Vedic grahas: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu
 
-import { putIn360 } from './math.js';
+import { putIn360, intFloor } from './math.js';
 import { getAyanamsa } from './ayanamsha.js';
 import { getRasiName } from './rasi.js';
 import { getNaksatraName } from './strings.js';
-import { intFloor } from './math.js';
+import { calculatePlanetPositions } from './planets.js';
 
-/** Mean longitude of Rahu (ascending lunar node) for a Julian date.
- *  Meeus, Astronomical Algorithms, Ch. 47 */
+/** Mean longitude of Rahu (ascending lunar node), Meeus Ch.47 */
 export function getRahuLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525.0;
-  // Mean longitude of ascending node (Omega)
-  const omega = 125.04452
-    + (-1934.136261 + (0.0020708 + (1.0 / 450000) * T) * T) * T;
-  return putIn360(omega);
+  return putIn360(125.04452 + (-1934.136261 + (0.0020708 + (1.0 / 450000) * T) * T) * T);
 }
 
 /** Ketu = Rahu + 180° */
@@ -22,15 +17,8 @@ export function getKetuLongitude(jd: number): number {
   return putIn360(getRahuLongitude(jd) + 180.0);
 }
 
-/** Get rasi index (0-11) for a given tropical longitude and ayanamsa */
-function getRasiIdx(longitude: number, ayanamsa: number): number {
-  return intFloor(putIn360(longitude - ayanamsa) / 30.0);
-}
-
-/** Get naksatra index (0-26) for a given tropical longitude and ayanamsa */
-function getNaksatraIdx(longitude: number, ayanamsa: number): number {
-  return intFloor(putIn360(longitude - ayanamsa) * 3.0 / 40.0);
-}
+function rasiIdx(lon: number, aya: number): number { return intFloor(putIn360(lon - aya) / 30.0); }
+function naksIdx(lon: number, aya: number): number { return intFloor(putIn360(lon - aya) * 3.0 / 40.0); }
 
 export interface GrahaPosition {
   name: string;
@@ -42,28 +30,34 @@ export interface GrahaPosition {
   naksatraIdx: number;
 }
 
-/** Calculate positions of all available grahas for a given Julian date */
+/** Calculate positions of all 9 Vedic grahas for a given Julian date */
 export function getGrahaPositions(
   jd: number,
   sunLongitude: number,
   moonLongitude: number,
 ): GrahaPosition[] {
-  const ayanamsa = getAyanamsa(jd);
+  const aya = getAyanamsa(jd);
+  const planets = calculatePlanetPositions(jd);
 
-  const grahas: { name: string; nameSanskrit: string; lon: number }[] = [
-    { name: 'Sun', nameSanskrit: 'Surya', lon: sunLongitude },
-    { name: 'Moon', nameSanskrit: 'Chandra', lon: moonLongitude },
-    { name: 'Rahu', nameSanskrit: 'Rahu', lon: getRahuLongitude(jd) },
-    { name: 'Ketu', nameSanskrit: 'Ketu', lon: getKetuLongitude(jd) },
+  const list: { name: string; skt: string; lon: number }[] = [
+    { name: 'Sun',     skt: 'Surya',    lon: sunLongitude },
+    { name: 'Moon',    skt: 'Chandra',  lon: moonLongitude },
+    { name: 'Mars',    skt: 'Mangala',  lon: planets.mars },
+    { name: 'Mercury', skt: 'Budha',    lon: planets.mercury },
+    { name: 'Jupiter', skt: 'Guru',     lon: planets.jupiter },
+    { name: 'Venus',   skt: 'Shukra',   lon: planets.venus },
+    { name: 'Saturn',  skt: 'Shani',    lon: planets.saturn },
+    { name: 'Rahu',    skt: 'Rahu',     lon: getRahuLongitude(jd) },
+    { name: 'Ketu',    skt: 'Ketu',     lon: getKetuLongitude(jd) },
   ];
 
-  return grahas.map(g => ({
+  return list.map(g => ({
     name: g.name,
-    nameSanskrit: g.nameSanskrit,
+    nameSanskrit: g.skt,
     longitude: g.lon,
-    rasi: getRasiName(getRasiIdx(g.lon, ayanamsa)),
-    naksatra: getNaksatraName(getNaksatraIdx(g.lon, ayanamsa)),
-    rasiIdx: getRasiIdx(g.lon, ayanamsa),
-    naksatraIdx: getNaksatraIdx(g.lon, ayanamsa),
+    rasi: getRasiName(rasiIdx(g.lon, aya)),
+    naksatra: getNaksatraName(naksIdx(g.lon, aya)),
+    rasiIdx: rasiIdx(g.lon, aya),
+    naksatraIdx: naksIdx(g.lon, aya),
   }));
 }

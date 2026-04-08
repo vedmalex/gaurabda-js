@@ -138,7 +138,10 @@ export type { AppDayResult } from './result-app.js';
 export { calculateSandhyaTimes, calculateBrahmaMuhurta, calculateMuhurtas } from './day-events.js';
 export type { SandhyaTimes } from './day-events.js';
 
-// Grahas (planetary positions)
+// Planets (simplified orbital mechanics)
+export { calculatePlanetPositions } from './planets.js';
+
+// Grahas (all 9 Vedic grahas)
 export { getRahuLongitude, getKetuLongitude, getGrahaPositions } from './grahas.js';
 export type { GrahaPosition } from './grahas.js';
 

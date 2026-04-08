@@ -10,6 +10,7 @@ import {
   FastType, getRasiName, calculateSandhyaTimes, calculateBrahmaMuhurta,
   SunData, KalaType, getGrahaPositions,
   getNaksatraChildSyllable, getRasiChildSyllable,
+  EarthData,
 } from '@gaurabda/core';
 
 interface TodayData {
@@ -41,9 +42,10 @@ interface TodayData {
   rahuKala: string;
   yamaGhanti: string;
   guliKala: string;
+  ascendant: string;
   childNameNaksatra: string;
   childNameRasi: string;
-  grahas: { name: string; rasi: string; naksatra: string }[];
+  grahas: { name: string; nameSanskrit: string; rasi: string; naksatra: string }[];
   events: string[];
 }
 
@@ -119,10 +121,19 @@ export default component$(() => {
         const [r1, r2] = SunData.calculateKala(sr.totalDays, astro.sunSet.totalDays, day.date!.weekday, KalaType.KT_GULI_KALAM);
         return r1 >= 0 ? `${fmtTime(r1)} - ${fmtTime(r2)}` : 'N/A';
       })(),
+      ascendant: (() => {
+        const e = new EarthData();
+        e.longitudeDeg = earth.longitudeDeg;
+        e.latitudeDeg = earth.latitudeDeg;
+        e.offsetUtcHours = earth.offsetUtcHours;
+        const ascDeg = e.getAscendantDegrees(astro.julianDay);
+        const ascRasi = Math.floor(ascDeg / 30);
+        return getRasiName(ascRasi);
+      })(),
       childNameNaksatra: getNaksatraChildSyllable(sr.naksatra, sr.naksatraPada) + '...',
       childNameRasi: getRasiChildSyllable(sr.rasiOfMoon),
       grahas: getGrahaPositions(astro.julianDay, sr.longitude, sr.longitudeMoon).map(g => ({
-        name: g.name, rasi: g.rasi, naksatra: g.naksatra,
+        name: g.name, nameSanskrit: g.nameSanskrit, rasi: g.rasi, naksatra: g.naksatra,
       })),
       events,
     };
@@ -226,14 +237,17 @@ export default component$(() => {
 
           {/* Graha positions */}
           <div class="bg-white rounded-lg shadow p-5">
-            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Graha Positions</h3>
+            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
+              Graha Positions
+              <span class="text-stone-300 ml-2 font-normal normal-case">Lagna: {data.value.ascendant}</span>
+            </h3>
             <div class="grid grid-cols-3 gap-1 text-xs">
               <span class="text-stone-400 font-medium">Graha</span>
               <span class="text-stone-400 font-medium">Rasi</span>
               <span class="text-stone-400 font-medium">Naksatra</span>
               {data.value.grahas.map((g, i) => (
                 <>
-                  <span key={`n${i}`} class="font-medium">{g.name}</span>
+                  <span key={`n${i}`} class="font-medium">{g.nameSanskrit} <span class="text-stone-400 font-normal">({g.name})</span></span>
                   <span key={`r${i}`}>{g.rasi}</span>
                   <span key={`k${i}`}>{g.naksatra}</span>
                 </>
