@@ -1,0 +1,29 @@
+{
+  "name": "@gaurabda/widget",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/gaurabda-widget.js",
+  "module": "./dist/gaurabda-widget.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/gaurabda-widget.js"
+      }
+    },
+    "./embed": "./dist/gaurabda-widget.iife.js"
+  },
+  "files": ["dist"],
+  "sideEffects": true,
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gaurabda/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "^4.5.0"
+  }
+}
