@@ -49,6 +49,8 @@ export default component$(() => {
   const now = new Date();
   const year = useSignal(parseInt(loc.url.searchParams.get('y') ?? '') || now.getFullYear());
   const month = useSignal(parseInt(loc.url.searchParams.get('m') ?? '') || (now.getMonth() + 1));
+  const highlightDay = parseInt(loc.url.searchParams.get('d') ?? '') || 0;
+  const datePickerValue = useSignal('');
 
   const days = useSignal<CalDay[]>([]);
   const masaLabel = useSignal('');
@@ -140,7 +142,13 @@ export default component$(() => {
 
     days.value = result;
     masaLabel.value = mainMasa;
-    selected.value = null;
+    // Auto-select day from URL param ?d=
+    if (highlightDay > 0) {
+      const found = result.find(d => d.day === highlightDay && d.isCurrentMonth);
+      selected.value = found ? { d: found } : null;
+    } else {
+      selected.value = null;
+    }
   });
 
   const monthName = useComputed$(() => GregorianDateTime.getMonthName(month.value) + ' ' + year.value);
@@ -160,6 +168,13 @@ export default component$(() => {
   const selectDay = $((d: CalDay) => { selected.value = { d }; });
   const closeDetail = $(() => { selected.value = null; });
 
+  const goToDate = $(() => {
+    const val = datePickerValue.value;
+    if (!val) return;
+    const [y, m] = val.split('-').map(Number);
+    if (y && m) { year.value = y; month.value = m; }
+  });
+
   const exportPDF = $(async () => {
     const { exportMonthToPDF } = await import('~/components/export-pdf');
     const stored = loadLocation();
@@ -177,7 +192,13 @@ export default component$(() => {
             <h2 class="text-2xl font-bold">{monthName.value}</h2>
             {masaLabel.value && <p class="text-sm text-stone-500">{masaLabel.value} Masa</p>}
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-2 items-center">
+            <input
+              type="month"
+              class="border rounded px-2 py-1 text-xs text-stone-600"
+              bind:value={datePickerValue}
+              onChange$={goToDate}
+            />
             <button onClick$={exportPDF} class="px-3 py-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs">PDF</button>
             <button onClick$={goNext} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&rarr;</button>
           </div>

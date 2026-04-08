@@ -1,5 +1,5 @@
 import { component$, useSignal, useVisibleTask$, $ } from '@builder.io/qwik';
-import { type DocumentHead } from '@builder.io/qwik-city';
+import { type DocumentHead, useNavigate } from '@builder.io/qwik-city';
 import {
   loadLocation, toEarthData, GregorianDateTime,
   ResultCalendar, getMasaName, getFastingName,
@@ -15,6 +15,10 @@ interface EventRow {
   time: string;
   detail: string;
   color: string;
+  /** For calendar navigation */
+  eventMonth: number;
+  eventYear: number;
+  eventDay: number;
 }
 
 const CATEGORY_COLORS: Record<EventCategory, string> = {
@@ -34,11 +38,16 @@ const CATEGORY_LABELS: { value: EventCategory; label: string }[] = [
 ];
 
 export default component$(() => {
+  const nav = useNavigate();
   const events = useSignal<EventRow[]>([]);
   const filter = useSignal<EventCategory>('all');
   const monthLabel = useSignal('');
   const yearVal = useSignal(new Date().getFullYear());
   const monthVal = useSignal(new Date().getMonth() + 1);
+
+  const goToCalendar = $((ev: EventRow) => {
+    nav(`/calendar/?y=${ev.eventYear}&m=${ev.eventMonth}&d=${ev.eventDay}`);
+  });
 
   const loadEvents = $(() => {
     const y = yearVal.value;
@@ -65,91 +74,56 @@ export default component$(() => {
       const a = day.astrodata;
       const sr = a.sunRise;
       const dateStr = `${day.date.day} ${GregorianDateTime.getMonthAbreviation(day.date.month)} ${WEEKDAYS[day.date.weekday]}`;
+      const eD = day.date.day, eM = day.date.month, eY = day.date.year;
 
       // Festivals
       const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, day.sankranti_zodiac);
       for (const f of festivals) {
         rows.push({
-          category: 'festival',
-          name: f.name,
-          date: dateStr,
-          time: '',
+          category: 'festival', name: f.name, date: dateStr, time: '',
           detail: f.fast ? getFastingName(f.fast) : '',
-          color: CATEGORY_COLORS.festival,
+          color: CATEGORY_COLORS.festival, eventDay: eD, eventMonth: eM, eventYear: eY,
         });
       }
 
       // Ekadasi / Parana
       if (day.nFastID === FastType.FAST_EKADASI) {
         rows.push({
-          category: 'ekadasi',
-          name: day.ekadasi_vrata_name || 'Ekadasi',
-          date: dateStr,
-          time: sr.toLongTimeString(),
-          detail: getFastingName(day.nFastID),
-          color: CATEGORY_COLORS.ekadasi,
+          category: 'ekadasi', name: day.ekadasi_vrata_name || 'Ekadasi',
+          date: dateStr, time: sr.toLongTimeString(),
+          detail: getFastingName(day.nFastID), color: CATEGORY_COLORS.ekadasi,
+          eventDay: eD, eventMonth: eM, eventYear: eY,
         });
       }
       if (day.ekadasi_parana) {
         rows.push({
-          category: 'ekadasi',
-          name: 'Ekadasi Parana (break fast)',
-          date: dateStr,
-          time: sr.toLongTimeString(),
-          detail: '',
+          category: 'ekadasi', name: 'Ekadasi Parana (break fast)',
+          date: dateStr, time: sr.toLongTimeString(), detail: '',
           color: 'text-green-700 bg-green-50',
+          eventDay: eD, eventMonth: eM, eventYear: eY,
         });
       }
 
       // Sankranti
       if (day.sankranti_zodiac >= 0) {
         rows.push({
-          category: 'sankranti',
-          name: `Sankranti`,
-          date: dateStr,
-          time: '',
-          detail: getMasaName(day.sankranti_zodiac),
-          color: CATEGORY_COLORS.sankranti,
+          category: 'sankranti', name: `Sankranti`, date: dateStr, time: '',
+          detail: getMasaName(day.sankranti_zodiac), color: CATEGORY_COLORS.sankranti,
+          eventDay: eD, eventMonth: eM, eventYear: eY,
         });
       }
 
       // Core astro events from coreEvents
       for (const ce of day.coreEvents) {
+        const astroBase = { category: 'astro' as EventCategory, date: dateStr, time: '', color: CATEGORY_COLORS.astro, eventDay: eD, eventMonth: eM, eventYear: eY };
         if (ce.nType === CoreEventType.CCTYPE_TITHI) {
-          rows.push({
-            category: 'astro',
-            name: CoreEvent.getTypeString(ce.nType, ce.nData),
-            date: dateStr,
-            time: '',
-            detail: 'Tithi transition',
-            color: CATEGORY_COLORS.astro,
-          });
+          rows.push({ ...astroBase, name: CoreEvent.getTypeString(ce.nType, ce.nData), detail: 'Tithi transition' });
         } else if (ce.nType === CoreEventType.CCTYPE_NAKS) {
-          rows.push({
-            category: 'astro',
-            name: CoreEvent.getTypeString(ce.nType, ce.nData),
-            date: dateStr,
-            time: '',
-            detail: 'Naksatra transition',
-            color: CATEGORY_COLORS.astro,
-          });
+          rows.push({ ...astroBase, name: CoreEvent.getTypeString(ce.nType, ce.nData), detail: 'Naksatra transition' });
         } else if (ce.nType === CoreEventType.CCTYPE_YOGA) {
-          rows.push({
-            category: 'astro',
-            name: CoreEvent.getTypeString(ce.nType, ce.nData),
-            date: dateStr,
-            time: '',
-            detail: 'Yoga transition',
-            color: CATEGORY_COLORS.astro,
-          });
+          rows.push({ ...astroBase, name: CoreEvent.getTypeString(ce.nType, ce.nData), detail: 'Yoga transition' });
         } else if (ce.nType === CoreEventType.CCTYPE_CONJ) {
-          rows.push({
-            category: 'astro',
-            name: CoreEvent.getTypeString(ce.nType, ce.nData),
-            date: dateStr,
-            time: '',
-            detail: 'Sun-Moon conjunction',
-            color: CATEGORY_COLORS.astro,
+          rows.push({ ...astroBase, name: CoreEvent.getTypeString(ce.nType, ce.nData), detail: 'Sun-Moon conjunction',
           });
         }
       }
@@ -223,12 +197,13 @@ export default component$(() => {
           </thead>
           <tbody>
             {filtered.map((ev, i) => (
-              <tr key={i} class="border-t hover:bg-stone-50">
+              <tr key={i} class="border-t hover:bg-amber-50 cursor-pointer" onClick$={() => goToCalendar(ev)}>
                 <td class="px-4 py-2 text-stone-500 whitespace-nowrap">{ev.date}</td>
                 <td class="px-4 py-2">
                   <span class={['px-1.5 py-0.5 rounded text-xs', ev.color]}>{ev.name}</span>
                 </td>
                 <td class="px-4 py-2 text-stone-400 text-xs">{ev.detail}</td>
+                <td class="px-4 py-1 text-stone-300 text-xs">&rarr;</td>
               </tr>
             ))}
           </tbody>
