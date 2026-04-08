@@ -13,9 +13,11 @@
     "@builder.io/qwik": "^1.12.0",
     "@builder.io/qwik-city": "^1.12.0",
     "@gaurabda/core": "workspace:*",
-    "@gaurabda/location": "workspace:*"
+    "@gaurabda/location": "workspace:*",
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.21",
     "autoprefixer": "^10.4.27",
     "ignore": "^7.0.5",
     "postcss": "^8.4.0",
