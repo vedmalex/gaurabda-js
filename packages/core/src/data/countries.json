@@ -1,0 +1,1363 @@
+{
+  "continents": [
+    "",
+    "Europe",
+    "Asia",
+    "Africa",
+    "America",
+    "Pacific",
+    "Indiana",
+    "Atlantic",
+    ""
+  ],
+  "countries": [
+    {
+      "code": 16708,
+      "name": "Andorra",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AD"
+    },
+    {
+      "code": 16709,
+      "name": "United Arab Emirates",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "AE"
+    },
+    {
+      "code": 16710,
+      "name": "Afghanistan",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "AF"
+    },
+    {
+      "code": 16711,
+      "name": "Antigua",
+      "continent": 4,
+      "abbreviatedName": "AG"
+    },
+    {
+      "code": 16716,
+      "name": "Albania",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AL"
+    },
+    {
+      "code": 16717,
+      "name": "Armenia",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AM"
+    },
+    {
+      "code": 16718,
+      "name": "Curacao",
+      "continent": 4,
+      "abbreviatedName": "AN"
+    },
+    {
+      "code": 16719,
+      "name": "Angola",
+      "continent": 3,
+      "abbreviatedName": "AO"
+    },
+    {
+      "code": 16722,
+      "name": "Argentina",
+      "continent": 4,
+      "FirstDayOfWeek": 0,
+      "abbreviatedName": "AR"
+    },
+    {
+      "code": 16723,
+      "name": "American Samoa",
+      "continent": 5,
+      "abbreviatedName": "AS"
+    },
+    {
+      "code": 16724,
+      "name": "Austria",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AT"
+    },
+    {
+      "code": 16725,
+      "name": "Australia",
+      "continent": 0,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AU"
+    },
+    {
+      "code": 16727,
+      "name": "Aruba",
+      "continent": 4,
+      "abbreviatedName": "AW"
+    },
+    {
+      "code": 16730,
+      "name": "Azerbaijan",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "AZ"
+    },
+    {
+      "code": 16961,
+      "name": "Bosnia and Herzegovina",
+      "continent": 1,
+      "abbreviatedName": "BA"
+    },
+    {
+      "code": 16962,
+      "name": "Barbados",
+      "continent": 4,
+      "abbreviatedName": "BB"
+    },
+    {
+      "code": 16964,
+      "name": "Bangladesh",
+      "continent": 2,
+      "abbreviatedName": "BD"
+    },
+    {
+      "code": 16965,
+      "name": "Belgium",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "BE"
+    },
+    {
+      "code": 16966,
+      "name": "Burkina Faso",
+      "continent": 3,
+      "abbreviatedName": "BF"
+    },
+    {
+      "code": 16967,
+      "name": "Bulgaria",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "BG"
+    },
+    {
+      "code": 16968,
+      "name": "Bahrain",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "BH"
+    },
+    {
+      "code": 16969,
+      "name": "Burundi",
+      "continent": 3,
+      "abbreviatedName": "BI"
+    },
+    {
+      "code": 16970,
+      "name": "Benin",
+      "continent": 3,
+      "abbreviatedName": "BJ"
+    },
+    {
+      "code": 16972,
+      "name": "Guadeloupe",
+      "continent": 4,
+      "abbreviatedName": "BL"
+    },
+    {
+      "code": 16974,
+      "name": "Brunei",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "BN"
+    },
+    {
+      "code": 16975,
+      "name": "Bolivia",
+      "continent": 4,
+      "abbreviatedName": "BO"
+    },
+    {
+      "code": 16978,
+      "name": "Brazil",
+      "continent": 4,
+      "abbreviatedName": "BR"
+    },
+    {
+      "code": 16979,
+      "name": "Bahamas",
+      "continent": 4,
+      "abbreviatedName": "BS"
+    },
+    {
+      "code": 16980,
+      "name": "Bhutan",
+      "continent": 2,
+      "abbreviatedName": "BT"
+    },
+    {
+      "code": 16983,
+      "name": "Botswana",
+      "continent": 3,
+      "abbreviatedName": "BW"
+    },
+    {
+      "code": 16985,
+      "name": "Belarus",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "BY"
+    },
+    {
+      "code": 16986,
+      "name": "Belize",
+      "continent": 4,
+      "abbreviatedName": "BZ"
+    },
+    {
+      "code": 17217,
+      "name": "Canada",
+      "continent": 4,
+      "abbreviatedName": "CA"
+    },
+    {
+      "code": 17220,
+      "name": "Democratic Republic of the Congo",
+      "continent": 3,
+      "abbreviatedName": "CD"
+    },
+    {
+      "code": 17222,
+      "name": "Central African Republic",
+      "continent": 3,
+      "abbreviatedName": "CF"
+    },
+    {
+      "code": 17223,
+      "name": "Congo",
+      "continent": 3,
+      "abbreviatedName": "CG"
+    },
+    {
+      "code": 17224,
+      "name": "Switzerland",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "CH"
+    },
+    {
+      "code": 17225,
+      "name": "Ivory Coast",
+      "continent": 3,
+      "abbreviatedName": "CI"
+    },
+    {
+      "code": 17227,
+      "name": "Cook Islands",
+      "continent": 5,
+      "abbreviatedName": "CK"
+    },
+    {
+      "code": 17228,
+      "name": "Chile",
+      "continent": 4,
+      "abbreviatedName": "CL"
+    },
+    {
+      "code": 17229,
+      "name": "Cameroon",
+      "continent": 3,
+      "abbreviatedName": "CM"
+    },
+    {
+      "code": 17230,
+      "name": "China",
+      "continent": 2,
+      "abbreviatedName": "CN"
+    },
+    {
+      "code": 17231,
+      "name": "Colombia",
+      "continent": 4,
+      "abbreviatedName": "CO"
+    },
+    {
+      "code": 17234,
+      "name": "Costa Rica",
+      "continent": 4,
+      "abbreviatedName": "CR"
+    },
+    {
+      "code": 17237,
+      "name": "Cuba",
+      "continent": 4,
+      "abbreviatedName": "CU"
+    },
+    {
+      "code": 17238,
+      "name": "Cape Verde",
+      "continent": 7,
+      "abbreviatedName": "CV"
+    },
+    {
+      "code": 17241,
+      "name": "Cyprus",
+      "continent": 2,
+      "abbreviatedName": "CY"
+    },
+    {
+      "code": 17242,
+      "name": "Czech",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "CZ"
+    },
+    {
+      "code": 17477,
+      "name": "Germany",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "DE"
+    },
+    {
+      "code": 17482,
+      "name": "Djibouty",
+      "continent": 3,
+      "abbreviatedName": "DJ"
+    },
+    {
+      "code": 17483,
+      "name": "Denmark",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "DK"
+    },
+    {
+      "code": 17485,
+      "name": "Dominica",
+      "continent": 4,
+      "abbreviatedName": "DM"
+    },
+    {
+      "code": 17487,
+      "name": "Dominican Republic",
+      "continent": 4,
+      "abbreviatedName": "DO"
+    },
+    {
+      "code": 17498,
+      "name": "Algeria",
+      "continent": 3,
+      "abbreviatedName": "DZ"
+    },
+    {
+      "code": 17731,
+      "name": "Ecuador",
+      "continent": 4,
+      "abbreviatedName": "EC"
+    },
+    {
+      "code": 17733,
+      "name": "Estonia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "EE"
+    },
+    {
+      "code": 17735,
+      "name": "Egypt",
+      "continent": 3,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "EG"
+    },
+    {
+      "code": 17736,
+      "name": "Western Sahara",
+      "continent": 3,
+      "abbreviatedName": "EH"
+    },
+    {
+      "code": 17746,
+      "name": "Eritrea",
+      "continent": 3,
+      "abbreviatedName": "ER"
+    },
+    {
+      "code": 17747,
+      "name": "Spain",
+      "continent": 3,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "ES"
+    },
+    {
+      "code": 17748,
+      "name": "Ethiopia",
+      "continent": 3,
+      "abbreviatedName": "ET"
+    },
+    {
+      "code": 17993,
+      "name": "Finland",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "FI"
+    },
+    {
+      "code": 17994,
+      "name": "Fiji",
+      "continent": 5,
+      "abbreviatedName": "FJ"
+    },
+    {
+      "code": 17997,
+      "name": "Ponape",
+      "continent": 5,
+      "abbreviatedName": "FM"
+    },
+    {
+      "code": 17999,
+      "name": "Faroe",
+      "continent": 7,
+      "abbreviatedName": "FO"
+    },
+    {
+      "code": 18002,
+      "name": "France",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "FR"
+    },
+    {
+      "code": 18241,
+      "name": "Gabon",
+      "continent": 3,
+      "abbreviatedName": "GA"
+    },
+    {
+      "code": 18242,
+      "name": "United Kingdom",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "GB"
+    },
+    {
+      "code": 18245,
+      "name": "Georgia",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "GE"
+    },
+    {
+      "code": 18246,
+      "name": "French Guiana",
+      "continent": 4,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "GF"
+    },
+    {
+      "code": 18248,
+      "name": "Ghana",
+      "continent": 3,
+      "abbreviatedName": "GH"
+    },
+    {
+      "code": 18249,
+      "name": "Gibraltar",
+      "continent": 1,
+      "abbreviatedName": "GI"
+    },
+    {
+      "code": 18252,
+      "name": "Greenland",
+      "continent": 4,
+      "abbreviatedName": "GL"
+    },
+    {
+      "code": 18253,
+      "name": "Gambia",
+      "continent": 3,
+      "abbreviatedName": "GM"
+    },
+    {
+      "code": 18254,
+      "name": "Guinea",
+      "continent": 3,
+      "abbreviatedName": "GN"
+    },
+    {
+      "code": 18256,
+      "name": "Guadeloupe",
+      "continent": 4,
+      "abbreviatedName": "GP"
+    },
+    {
+      "code": 18257,
+      "name": "Equatorial Guinea",
+      "continent": 3,
+      "abbreviatedName": "GQ"
+    },
+    {
+      "code": 18258,
+      "name": "Greece",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "GR"
+    },
+    {
+      "code": 18260,
+      "name": "Guatemala",
+      "continent": 4,
+      "abbreviatedName": "GT"
+    },
+    {
+      "code": 18261,
+      "name": "Guam",
+      "continent": 5,
+      "abbreviatedName": "GU"
+    },
+    {
+      "code": 18263,
+      "name": "Guinea-Bissau",
+      "continent": 3,
+      "abbreviatedName": "GW"
+    },
+    {
+      "code": 18265,
+      "name": "Guyana",
+      "continent": 4,
+      "abbreviatedName": "GY"
+    },
+    {
+      "code": 18507,
+      "name": "Hong Kong",
+      "continent": 2,
+      "abbreviatedName": "HK"
+    },
+    {
+      "code": 18510,
+      "name": "Honduras",
+      "continent": 4,
+      "abbreviatedName": "HN"
+    },
+    {
+      "code": 18514,
+      "name": "Croatia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "HR"
+    },
+    {
+      "code": 18516,
+      "name": "Haiti",
+      "continent": 4,
+      "abbreviatedName": "HT"
+    },
+    {
+      "code": 18517,
+      "name": "Hungary",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "HU"
+    },
+    {
+      "code": 18756,
+      "name": "Indonesia",
+      "continent": 2,
+      "abbreviatedName": "ID"
+    },
+    {
+      "code": 18757,
+      "name": "Ireland",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "IE"
+    },
+    {
+      "code": 18764,
+      "name": "Israel",
+      "continent": 2,
+      "abbreviatedName": "IL"
+    },
+    {
+      "code": 18766,
+      "name": "India",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "IN"
+    },
+    {
+      "code": 18769,
+      "name": "Iraq",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "IQ"
+    },
+    {
+      "code": 18770,
+      "name": "Iran",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "IR"
+    },
+    {
+      "code": 18771,
+      "name": "Iceland",
+      "continent": 7,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "IS"
+    },
+    {
+      "code": 18772,
+      "name": "Italy",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "IT"
+    },
+    {
+      "code": 19021,
+      "name": "Jamaica",
+      "continent": 4,
+      "abbreviatedName": "JM"
+    },
+    {
+      "code": 19023,
+      "name": "Jordan",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "JO"
+    },
+    {
+      "code": 19024,
+      "name": "Japan",
+      "continent": 2,
+      "abbreviatedName": "JP"
+    },
+    {
+      "code": 19269,
+      "name": "Kenya",
+      "continent": 3,
+      "abbreviatedName": "KE"
+    },
+    {
+      "code": 19271,
+      "name": "Kyrgyzstan",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "KG"
+    },
+    {
+      "code": 19272,
+      "name": "Cambodia",
+      "continent": 2,
+      "abbreviatedName": "KH"
+    },
+    {
+      "code": 19273,
+      "name": "Kiribati",
+      "continent": 5,
+      "abbreviatedName": "KI"
+    },
+    {
+      "code": 19277,
+      "name": "Comoro",
+      "continent": 6,
+      "abbreviatedName": "KM"
+    },
+    {
+      "code": 19278,
+      "name": "Saint Kitts and Nevis",
+      "continent": 4,
+      "abbreviatedName": "KN"
+    },
+    {
+      "code": 19280,
+      "name": "North Korea",
+      "continent": 2,
+      "abbreviatedName": "KP"
+    },
+    {
+      "code": 19282,
+      "name": "South Korea",
+      "continent": 2,
+      "abbreviatedName": "KR"
+    },
+    {
+      "code": 19287,
+      "name": "Kuwait",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "KW"
+    },
+    {
+      "code": 19289,
+      "name": "Cauman",
+      "continent": 4,
+      "abbreviatedName": "KY"
+    },
+    {
+      "code": 19290,
+      "name": "Kazakhstan",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "KZ"
+    },
+    {
+      "code": 19521,
+      "name": "Laos",
+      "continent": 2,
+      "abbreviatedName": "LA"
+    },
+    {
+      "code": 19522,
+      "name": "Lebanon",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "LB"
+    },
+    {
+      "code": 19523,
+      "name": "Saint Lucia",
+      "continent": 4,
+      "abbreviatedName": "LC"
+    },
+    {
+      "code": 19529,
+      "name": "Liechtenstein",
+      "continent": 1,
+      "abbreviatedName": "LI"
+    },
+    {
+      "code": 19531,
+      "name": "Sri Lanka",
+      "continent": 2,
+      "abbreviatedName": "LK"
+    },
+    {
+      "code": 19538,
+      "name": "Liberia",
+      "continent": 3,
+      "abbreviatedName": "LR"
+    },
+    {
+      "code": 19539,
+      "name": "Lesotho",
+      "continent": 3,
+      "abbreviatedName": "LS"
+    },
+    {
+      "code": 19540,
+      "name": "Lithuania",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "LT"
+    },
+    {
+      "code": 19541,
+      "name": "Luxembourg",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "LU"
+    },
+    {
+      "code": 19542,
+      "name": "Latvia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "LV"
+    },
+    {
+      "code": 19545,
+      "name": "Libya",
+      "continent": 3,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "LY"
+    },
+    {
+      "code": 19777,
+      "name": "Morocco",
+      "continent": 3,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "MA"
+    },
+    {
+      "code": 19779,
+      "name": "Monaco",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "MC"
+    },
+    {
+      "code": 19780,
+      "name": "Moldova",
+      "continent": 1,
+      "abbreviatedName": "MD"
+    },
+    {
+      "code": 19781,
+      "name": "Montenegro",
+      "continent": 1,
+      "abbreviatedName": "ME"
+    },
+    {
+      "code": 19783,
+      "name": "Madagascar",
+      "continent": 6,
+      "abbreviatedName": "MG"
+    },
+    {
+      "code": 19784,
+      "name": "Marshall Islands",
+      "continent": 5,
+      "abbreviatedName": "MH"
+    },
+    {
+      "code": 19787,
+      "name": "Macedonia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "MK"
+    },
+    {
+      "code": 19788,
+      "name": "Mali",
+      "continent": 3,
+      "abbreviatedName": "ML"
+    },
+    {
+      "code": 19789,
+      "name": "Burma",
+      "continent": 2,
+      "abbreviatedName": "MM"
+    },
+    {
+      "code": 19790,
+      "name": "Mongolia",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "MN"
+    },
+    {
+      "code": 19792,
+      "name": "Northern Mariana Islands",
+      "continent": 5,
+      "abbreviatedName": "MP"
+    },
+    {
+      "code": 19793,
+      "name": "Martinique",
+      "continent": 4,
+      "abbreviatedName": "MQ"
+    },
+    {
+      "code": 19794,
+      "name": "Mauritania",
+      "continent": 3,
+      "abbreviatedName": "MR"
+    },
+    {
+      "code": 19796,
+      "name": "Malta",
+      "continent": 1,
+      "abbreviatedName": "MT"
+    },
+    {
+      "code": 19797,
+      "name": "Mauritius",
+      "continent": 6,
+      "abbreviatedName": "MU"
+    },
+    {
+      "code": 19798,
+      "name": "Maldives",
+      "continent": 6,
+      "abbreviatedName": "MV"
+    },
+    {
+      "code": 19799,
+      "name": "Malawi",
+      "continent": 3,
+      "abbreviatedName": "MW"
+    },
+    {
+      "code": 19800,
+      "name": "Mexico",
+      "continent": 4,
+      "abbreviatedName": "MX"
+    },
+    {
+      "code": 19801,
+      "name": "Malaysia",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "MY"
+    },
+    {
+      "code": 19802,
+      "name": "Mozambique",
+      "continent": 3,
+      "abbreviatedName": "MZ"
+    },
+    {
+      "code": 20033,
+      "name": "Nairobi",
+      "continent": 3,
+      "abbreviatedName": "NA"
+    },
+    {
+      "code": 20035,
+      "name": "New Caledonia",
+      "continent": 5,
+      "abbreviatedName": "NC"
+    },
+    {
+      "code": 20037,
+      "name": "Niger",
+      "continent": 3,
+      "abbreviatedName": "NE"
+    },
+    {
+      "code": 20039,
+      "name": "Nigeria",
+      "continent": 3,
+      "abbreviatedName": "NG"
+    },
+    {
+      "code": 20041,
+      "name": "Nicaragua",
+      "continent": 4,
+      "abbreviatedName": "NI"
+    },
+    {
+      "code": 20044,
+      "name": "Netherlands",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "NL"
+    },
+    {
+      "code": 20047,
+      "name": "Norway",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "NO"
+    },
+    {
+      "code": 20048,
+      "name": "Nepal",
+      "continent": 2,
+      "abbreviatedName": "NP"
+    },
+    {
+      "code": 20058,
+      "name": "New Zealand",
+      "continent": 5,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "NZ"
+    },
+    {
+      "code": 20301,
+      "name": "Oman",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "OM"
+    },
+    {
+      "code": 20545,
+      "name": "Panama",
+      "continent": 4,
+      "abbreviatedName": "PA"
+    },
+    {
+      "code": 20549,
+      "name": "Peru",
+      "continent": 4,
+      "abbreviatedName": "PE"
+    },
+    {
+      "code": 20550,
+      "name": "Tahiti",
+      "continent": 5,
+      "abbreviatedName": "PF"
+    },
+    {
+      "code": 20551,
+      "name": "Papua New Guinea",
+      "continent": 5,
+      "abbreviatedName": "PG"
+    },
+    {
+      "code": 20552,
+      "name": "Philippines",
+      "continent": 2,
+      "abbreviatedName": "PH"
+    },
+    {
+      "code": 20555,
+      "name": "Pakistan",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "PK"
+    },
+    {
+      "code": 20556,
+      "name": "Poland",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "PL"
+    },
+    {
+      "code": 20557,
+      "name": "Miquelon",
+      "continent": 4,
+      "abbreviatedName": "PM"
+    },
+    {
+      "code": 20562,
+      "name": "Puerto Rico",
+      "continent": 4,
+      "abbreviatedName": "PR"
+    },
+    {
+      "code": 20563,
+      "name": "Gaza Strip",
+      "continent": 2,
+      "abbreviatedName": "PS"
+    },
+    {
+      "code": 20564,
+      "name": "Portugal",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "PT"
+    },
+    {
+      "code": 20569,
+      "name": "Paraguay",
+      "continent": 4,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "PY"
+    },
+    {
+      "code": 20801,
+      "name": "Qatar",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "QA"
+    },
+    {
+      "code": 21061,
+      "name": "Reunion",
+      "continent": 6,
+      "abbreviatedName": "RE"
+    },
+    {
+      "code": 21071,
+      "name": "Romania",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "RO"
+    },
+    {
+      "code": 21075,
+      "name": "Serbia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "RS"
+    },
+    {
+      "code": 21077,
+      "name": "Russia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "RU"
+    },
+    {
+      "code": 21079,
+      "name": "Rwanda",
+      "continent": 3,
+      "abbreviatedName": "RW"
+    },
+    {
+      "code": 21313,
+      "name": "Saudi Arabia",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "SA"
+    },
+    {
+      "code": 21314,
+      "name": "Solomon Islands",
+      "continent": 5,
+      "abbreviatedName": "SB"
+    },
+    {
+      "code": 21315,
+      "name": "Mahe",
+      "continent": 6,
+      "abbreviatedName": "SC"
+    },
+    {
+      "code": 21316,
+      "name": "Sudan",
+      "continent": 3,
+      "abbreviatedName": "SD"
+    },
+    {
+      "code": 21317,
+      "name": "Sweden",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "SE"
+    },
+    {
+      "code": 21319,
+      "name": "Singapore",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "SG"
+    },
+    {
+      "code": 21321,
+      "name": "Slovenia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "SI"
+    },
+    {
+      "code": 21323,
+      "name": "Slovakia",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "SK"
+    },
+    {
+      "code": 21324,
+      "name": "Sierra Leone",
+      "continent": 3,
+      "abbreviatedName": "SL"
+    },
+    {
+      "code": 21325,
+      "name": "San Marino",
+      "continent": 1,
+      "abbreviatedName": "SM"
+    },
+    {
+      "code": 21326,
+      "name": "Senegal",
+      "continent": 3,
+      "abbreviatedName": "SN"
+    },
+    {
+      "code": 21327,
+      "name": "Somalia",
+      "continent": 3,
+      "abbreviatedName": "SO"
+    },
+    {
+      "code": 21330,
+      "name": "Suriname",
+      "continent": 4,
+      "abbreviatedName": "SR"
+    },
+    {
+      "code": 21332,
+      "name": "Sao Tome",
+      "continent": 3,
+      "abbreviatedName": "ST"
+    },
+    {
+      "code": 21334,
+      "name": "El Salvador",
+      "continent": 4,
+      "abbreviatedName": "SV"
+    },
+    {
+      "code": 21337,
+      "name": "Syria",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "SY"
+    },
+    {
+      "code": 21338,
+      "name": "Swaziland",
+      "continent": 3,
+      "abbreviatedName": "SZ"
+    },
+    {
+      "code": 21572,
+      "name": "Chad",
+      "continent": 3,
+      "abbreviatedName": "TD"
+    },
+    {
+      "code": 21575,
+      "name": "Togo",
+      "continent": 3,
+      "abbreviatedName": "TG"
+    },
+    {
+      "code": 21576,
+      "name": "Thailand",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "TH"
+    },
+    {
+      "code": 21578,
+      "name": "Tajikistan",
+      "continent": 2,
+      "abbreviatedName": "TJ"
+    },
+    {
+      "code": 21580,
+      "name": "Lesser Sunda Islands",
+      "continent": 2,
+      "abbreviatedName": "TL"
+    },
+    {
+      "code": 21581,
+      "name": "Turkmenistan",
+      "continent": 2,
+      "abbreviatedName": "TM"
+    },
+    {
+      "code": 21582,
+      "name": "Tunis",
+      "continent": 3,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "TN"
+    },
+    {
+      "code": 21586,
+      "name": "Turkey",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "TR"
+    },
+    {
+      "code": 21588,
+      "name": "Trinidad and Tobago",
+      "continent": 4,
+      "abbreviatedName": "TT"
+    },
+    {
+      "code": 21591,
+      "name": "Taiwan",
+      "continent": 2,
+      "FirstDayOfWeek": 0,
+      "abbreviatedName": "TW"
+    },
+    {
+      "code": 21594,
+      "name": "Tanzania",
+      "continent": 3,
+      "abbreviatedName": "TZ"
+    },
+    {
+      "code": 21825,
+      "name": "Ukraine",
+      "continent": 1,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "UA"
+    },
+    {
+      "code": 21831,
+      "name": "Uganda",
+      "continent": 3,
+      "abbreviatedName": "UG"
+    },
+    {
+      "code": 21843,
+      "name": "United States of America",
+      "continent": 4,
+      "abbreviatedName": "US"
+    },
+    {
+      "code": 21849,
+      "name": "Uruguay",
+      "continent": 4,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "UY"
+    },
+    {
+      "code": 21850,
+      "name": "Uzbekistan",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "UZ"
+    },
+    {
+      "code": 22083,
+      "name": "Saint Vincent",
+      "continent": 4,
+      "abbreviatedName": "VC"
+    },
+    {
+      "code": 22085,
+      "name": "Venezuela",
+      "continent": 4,
+      "abbreviatedName": "VE"
+    },
+    {
+      "code": 22087,
+      "name": "Virgin Islands",
+      "continent": 4,
+      "abbreviatedName": "VG"
+    },
+    {
+      "code": 22094,
+      "name": "Vietnam",
+      "continent": 2,
+      "FirstDayOfWeek": 1,
+      "abbreviatedName": "VN"
+    },
+    {
+      "code": 22101,
+      "name": "Vanuatu",
+      "continent": 5,
+      "abbreviatedName": "VU"
+    },
+    {
+      "code": 22355,
+      "name": "Samoa",
+      "continent": 5,
+      "abbreviatedName": "WS"
+    },
+    {
+      "code": 22853,
+      "name": "Yemen",
+      "continent": 2,
+      "FirstDayOfWeek": 6,
+      "abbreviatedName": "YE"
+    },
+    {
+      "code": 22868,
+      "name": "Mayotte",
+      "continent": 6,
+      "abbreviatedName": "YT"
+    },
+    {
+      "code": 23105,
+      "name": "South Africa",
+      "continent": 3,
+      "abbreviatedName": "ZA"
+    },
+    {
+      "code": 23117,
+      "name": "Zambia",
+      "continent": 3,
+      "abbreviatedName": "ZM"
+    },
+    {
+      "code": 23127,
+      "name": "Zimbabwe",
+      "continent": 3,
+      "abbreviatedName": "ZW"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# MB3 memory-bank
+memory-bank/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Plan files
+.plan/
