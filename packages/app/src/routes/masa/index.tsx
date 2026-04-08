@@ -24,11 +24,7 @@ const MASA_COLORS = [
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-function dayOfYear(d: { day: number; month: number; year: number }): number {
-  const dt = new Date(d.year, d.month - 1, d.day);
-  const jan1 = new Date(d.year, 0, 1);
-  return Math.floor((dt.getTime() - jan1.getTime()) / 86400000);
-}
+// removed dayOfYear — using toDayNum (relative to Jan 1 of selected year) instead
 
 export default component$(() => {
   const yearVal = useSignal(new Date().getFullYear());
@@ -54,27 +50,33 @@ export default component$(() => {
       gaurabdaYear.value = rml.entries[0].year;
     }
 
-    masas.value = rml.entries.map((e) => {
-      const s = dayOfYear({ day: e.vcStart.day, month: e.vcStart.month, year: y });
-      let en = dayOfYear({ day: e.vcEnd.day, month: e.vcEnd.month, year: e.vcEnd.year });
-      // If end is in next year, clamp to 365
-      if (e.vcEnd.year > y) en = total;
-      // If start is before this year, clamp to 0
-      const startClamped = e.vcStart.year < y ? 0 : Math.max(0, s);
-      const endClamped = Math.min(total, en);
+    const jan1 = new Date(y, 0, 1).getTime();
+    const toDayNum = (day: number, month: number, yr: number) => {
+      const d = new Date(yr, month - 1, day);
+      return Math.floor((d.getTime() - jan1) / 86400000);
+    };
 
-      return {
-        masa: getMasaName(e.masa),
-        year: e.year,
-        startDay: startClamped,
-        endDay: endClamped,
-        startLabel: `${e.vcStart.day} ${MONTH_NAMES[e.vcStart.month - 1]}`,
-        endLabel: `${e.vcEnd.day} ${MONTH_NAMES[e.vcEnd.month - 1]}`,
-        width: ((endClamped - startClamped) / total) * 100,
-        left: (startClamped / total) * 100,
-        color: MASA_COLORS[e.masa % MASA_COLORS.length],
-      };
-    });
+    masas.value = rml.entries
+      .map((e) => {
+        const s = toDayNum(e.vcStart.day, e.vcStart.month, e.vcStart.year);
+        const en = toDayNum(e.vcEnd.day, e.vcEnd.month, e.vcEnd.year);
+        const startClamped = Math.max(0, s);
+        const endClamped = Math.min(total, en);
+        if (endClamped <= startClamped) return null; // fully outside this year
+
+        return {
+          masa: getMasaName(e.masa),
+          year: e.year,
+          startDay: startClamped,
+          endDay: endClamped,
+          startLabel: `${e.vcStart.day} ${MONTH_NAMES[e.vcStart.month - 1]}`,
+          endLabel: `${e.vcEnd.day} ${MONTH_NAMES[e.vcEnd.month - 1]}`,
+          width: ((endClamped - startClamped) / total) * 100,
+          left: (startClamped / total) * 100,
+          color: MASA_COLORS[e.masa % MASA_COLORS.length],
+        };
+      })
+      .filter((m): m is NonNullable<typeof m> => m !== null);
   });
 
   const goPrev = $((): void => { yearVal.value--; });
