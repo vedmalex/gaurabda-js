@@ -39,30 +39,39 @@ export default component$(() => {
     const stored = loadLocation();
     const earth = toEarthData(stored);
 
-    const rml = new ResultMasaList();
-    rml.calculateMasaList(earth, y, 1);
+    // Calculate 3 years to capture masas spanning year boundaries
+    const allEntries: typeof ResultMasaList.prototype.entries = [];
+    for (const yr of [y - 1, y, y + 1]) {
+      const rml = new ResultMasaList();
+      rml.calculateMasaList(earth, yr, 1);
+      allEntries.push(...rml.entries);
+    }
 
     const isLeap = GregorianDateTime.isLeapYear(y);
     const total = isLeap ? 366 : 365;
     totalDays.value = total;
 
-    if (rml.entries.length > 0) {
-      gaurabdaYear.value = rml.entries[0].year;
-    }
+    // Find gaurabda year from the first masa that starts in this calendar year
+    const firstInYear = allEntries.find(e => e.vcStart.year === y);
+    if (firstInYear) gaurabdaYear.value = firstInYear.year;
 
     const jan1 = new Date(y, 0, 1).getTime();
-    const toDayNum = (day: number, month: number, yr: number) => {
-      const d = new Date(yr, month - 1, day);
-      return Math.floor((d.getTime() - jan1) / 86400000);
-    };
+    const toDayNum = (day: number, mo: number, yr: number) =>
+      Math.floor((new Date(yr, mo - 1, day).getTime() - jan1) / 86400000);
 
-    masas.value = rml.entries
+    // Deduplicate by masa+start and filter to visible range
+    const seen = new Set<string>();
+    masas.value = allEntries
       .map((e) => {
+        const key = `${e.masa}-${e.vcStart.day}-${e.vcStart.month}-${e.vcStart.year}`;
+        if (seen.has(key)) return null;
+        seen.add(key);
+
         const s = toDayNum(e.vcStart.day, e.vcStart.month, e.vcStart.year);
         const en = toDayNum(e.vcEnd.day, e.vcEnd.month, e.vcEnd.year);
         const startClamped = Math.max(0, s);
         const endClamped = Math.min(total, en);
-        if (endClamped <= startClamped) return null; // fully outside this year
+        if (endClamped <= startClamped) return null;
 
         return {
           masa: getMasaName(e.masa),
@@ -76,7 +85,8 @@ export default component$(() => {
           color: MASA_COLORS[e.masa % MASA_COLORS.length],
         };
       })
-      .filter((m): m is NonNullable<typeof m> => m !== null);
+      .filter((m): m is NonNullable<typeof m> => m !== null)
+      .sort((a, b) => a.startDay - b.startDay);
   });
 
   const goPrev = $((): void => { yearVal.value--; });
