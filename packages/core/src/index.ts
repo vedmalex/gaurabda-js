@@ -138,6 +138,10 @@ export type { AppDayResult } from './result-app.js';
 export { calculateSandhyaTimes, calculateBrahmaMuhurta, calculateMuhurtas } from './day-events.js';
 export type { SandhyaTimes } from './day-events.js';
 
+// Grahas (planetary positions)
+export { getRahuLongitude, getKetuLongitude, getGrahaPositions } from './grahas.js';
+export type { GrahaPosition } from './grahas.js';
+
 // Festival events (ISKCON)
 export { matchFestivals, getFestivalBookNames, getFestivalCount } from './festival-events.js';
 export type { MatchedFestival } from './festival-events.js';

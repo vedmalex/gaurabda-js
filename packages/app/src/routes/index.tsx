@@ -6,7 +6,11 @@ import {
   getYogaName, getPaksaName,
   getFastingName, getDSTSignature, GregorianDateTime,
 } from '~/components/location-store';
-import { FastType, getRasiName, calculateSandhyaTimes, calculateBrahmaMuhurta } from '@gaurabda/core';
+import {
+  FastType, getRasiName, calculateSandhyaTimes, calculateBrahmaMuhurta,
+  SunData, KalaType, getGrahaPositions, type GrahaPosition,
+  getNaksatraChildSyllable, getRasiChildSyllable,
+} from '@gaurabda/core';
 
 interface TodayData {
   date: string;
@@ -34,6 +38,12 @@ interface TodayData {
   gayatri: string;
   savitri: string;
   saraswati: string;
+  rahuKala: string;
+  yamaGhanti: string;
+  guliKala: string;
+  childNameNaksatra: string;
+  childNameRasi: string;
+  grahas: { name: string; rasi: string; naksatra: string }[];
   events: string[];
 }
 
@@ -97,6 +107,23 @@ export default component$(() => {
       gayatri: `${fmtTime(sandhya.gayatriStart)} - ${fmtTime(sandhya.gayatriEnd)}`,
       savitri: `${fmtTime(sandhya.savitriStart)} - ${fmtTime(sandhya.savitriEnd)}`,
       saraswati: `${fmtTime(sandhya.saraswatiStart)} - ${fmtTime(sandhya.saraswatiEnd)}`,
+      rahuKala: (() => {
+        const [r1, r2] = SunData.calculateKala(sr.totalDays, astro.sunSet.totalDays, day.date!.weekday, KalaType.KT_RAHU_KALAM);
+        return r1 >= 0 ? `${fmtTime(r1)} - ${fmtTime(r2)}` : 'N/A';
+      })(),
+      yamaGhanti: (() => {
+        const [r1, r2] = SunData.calculateKala(sr.totalDays, astro.sunSet.totalDays, day.date!.weekday, KalaType.KT_YAMA_GHANTI);
+        return r1 >= 0 ? `${fmtTime(r1)} - ${fmtTime(r2)}` : 'N/A';
+      })(),
+      guliKala: (() => {
+        const [r1, r2] = SunData.calculateKala(sr.totalDays, astro.sunSet.totalDays, day.date!.weekday, KalaType.KT_GULI_KALAM);
+        return r1 >= 0 ? `${fmtTime(r1)} - ${fmtTime(r2)}` : 'N/A';
+      })(),
+      childNameNaksatra: getNaksatraChildSyllable(sr.naksatra, sr.naksatraPada) + '...',
+      childNameRasi: getRasiChildSyllable(sr.rasiOfMoon),
+      grahas: getGrahaPositions(astro.julianDay, sr.longitude, sr.longitudeMoon).map(g => ({
+        name: g.name, rasi: g.rasi, naksatra: g.naksatra,
+      })),
       events,
     };
   });
@@ -181,6 +208,47 @@ export default component$(() => {
               <dd>{data.value.savitri}</dd>
               <dt class="text-stone-400">Saraswati (sunset)</dt>
               <dd>{data.value.saraswati}</dd>
+            </dl>
+          </div>
+
+          {/* Kala (inauspicious periods) */}
+          <div class="bg-white rounded-lg shadow p-5">
+            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Kala Periods</h3>
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+              <dt class="text-red-400">Rahu Kala</dt>
+              <dd class="text-red-600">{data.value.rahuKala}</dd>
+              <dt class="text-orange-400">Yama Ghanti</dt>
+              <dd class="text-orange-600">{data.value.yamaGhanti}</dd>
+              <dt class="text-amber-400">Guli Kala</dt>
+              <dd class="text-amber-600">{data.value.guliKala}</dd>
+            </dl>
+          </div>
+
+          {/* Graha positions */}
+          <div class="bg-white rounded-lg shadow p-5">
+            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Graha Positions</h3>
+            <div class="grid grid-cols-3 gap-1 text-xs">
+              <span class="text-stone-400 font-medium">Graha</span>
+              <span class="text-stone-400 font-medium">Rasi</span>
+              <span class="text-stone-400 font-medium">Naksatra</span>
+              {data.value.grahas.map((g, i) => (
+                <>
+                  <span key={`n${i}`} class="font-medium">{g.name}</span>
+                  <span key={`r${i}`}>{g.rasi}</span>
+                  <span key={`k${i}`}>{g.naksatra}</span>
+                </>
+              ))}
+            </div>
+          </div>
+
+          {/* Child name suggestions */}
+          <div class="bg-white rounded-lg shadow p-5">
+            <h3 class="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Child Name Syllables</h3>
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+              <dt class="text-stone-400">By Naksatra</dt>
+              <dd class="font-medium">{data.value.childNameNaksatra}</dd>
+              <dt class="text-stone-400">By Rasi</dt>
+              <dd class="font-medium">{data.value.childNameRasi}</dd>
             </dl>
           </div>
 
