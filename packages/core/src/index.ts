@@ -123,3 +123,13 @@ export { getCountryName, getCountryContinentName, getCountryByISOCode, getCountr
 
 // Location
 export { Location } from './location.js';
+
+// Result: DST-aware events
+export { ResultEvents, DayEvent, SORTING_BY_TYPE, SORTING_BY_DATE } from './result-events.js';
+
+// Result: today
+export { ResultToday } from './result-today.js';
+
+// Result: appearance day
+export { calculateAppDay } from './result-app.js';
+export type { AppDayResult } from './result-app.js';
