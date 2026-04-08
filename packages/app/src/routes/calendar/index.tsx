@@ -1,11 +1,16 @@
 import { component$, useSignal, useVisibleTask$, useComputed$, $ } from '@builder.io/qwik';
-import { type DocumentHead, useLocation } from '@builder.io/qwik-city';
+import { type DocumentHead, useLocation, Link } from '@builder.io/qwik-city';
 import {
   loadLocation, toEarthData,
   ResultCalendar, GregorianDateTime, getMasaName, getTithiName,
   getNaksatraName, getYogaName, getPaksaName, getFastingName,
+  getDSTSignature,
 } from '~/components/location-store';
-import { FastType, matchFestivals, calculateSandhyaTimes, calculateBrahmaMuhurta } from '@gaurabda/core';
+import {
+  FastType, matchFestivals, calculateSandhyaTimes, calculateBrahmaMuhurta,
+  SunData, KalaType, getGrahaPositions, getRasiName, EarthData,
+  getNaksatraChildSyllable, getRasiChildSyllable,
+} from '@gaurabda/core';
 
 interface CalDay {
   day: number;
@@ -29,12 +34,26 @@ interface CalDay {
   fastName: string;
   ekadasiName: string;
   sankrantiZodiac: number;
-  // for detail panel
+  // detail panel (today-level)
+  noon: string;
   sunNaksatra: string;
   sunRasi: string;
+  yogaElapse: string;
+  tithiElapse: string;
+  naksatraElapse: string;
   gaurabdaYear: number;
   brahmaMuhurta: string;
   gayatri: string;
+  savitri: string;
+  saraswati: string;
+  rahuKala: string;
+  yamaGhanti: string;
+  guliKala: string;
+  grahas: { name: string; skt: string; rasi: string; naksatra: string }[];
+  childNaksatra: string;
+  childRasi: string;
+  dstSig: string;
+  ascendant: string;
 }
 
 interface SelectedDay {
@@ -104,11 +123,25 @@ export default component$(() => {
         fastName: vd.nFastID !== FastType.FAST_NULL ? getFastingName(vd.nFastID) : '',
         ekadasiName: vd.ekadasi_vrata_name || '',
         sankrantiZodiac: vd.sankranti_zodiac,
+        noon: a.sunNoon.toLongTimeString(),
         sunNaksatra: getNaksatraName(sr.sunNaksatra),
-        sunRasi: '',
+        sunRasi: getRasiName(sr.rasiOfSun),
+        yogaElapse: sr.yogaElapse.toFixed(1) + '%',
+        tithiElapse: sr.tithiElapse.toFixed(1) + '%',
+        naksatraElapse: sr.naksatraElapse.toFixed(1) + '%',
         gaurabdaYear: a.gaurabdaYear,
         brahmaMuhurta: `${fmtTime(bmS)} - ${fmtTime(bmE)}`,
         gayatri: `${fmtTime(sandhya.gayatriStart)} - ${fmtTime(sandhya.gayatriEnd)}`,
+        savitri: `${fmtTime(sandhya.savitriStart)} - ${fmtTime(sandhya.savitriEnd)}`,
+        saraswati: `${fmtTime(sandhya.saraswatiStart)} - ${fmtTime(sandhya.saraswatiEnd)}`,
+        rahuKala: (() => { const [r1, r2] = SunData.calculateKala(sr.totalDays, a.sunSet.totalDays, vd.date!.weekday, KalaType.KT_RAHU_KALAM); return r1 >= 0 ? `${fmtTime(r1)}-${fmtTime(r2)}` : ''; })(),
+        yamaGhanti: (() => { const [r1, r2] = SunData.calculateKala(sr.totalDays, a.sunSet.totalDays, vd.date!.weekday, KalaType.KT_YAMA_GHANTI); return r1 >= 0 ? `${fmtTime(r1)}-${fmtTime(r2)}` : ''; })(),
+        guliKala: (() => { const [r1, r2] = SunData.calculateKala(sr.totalDays, a.sunSet.totalDays, vd.date!.weekday, KalaType.KT_GULI_KALAM); return r1 >= 0 ? `${fmtTime(r1)}-${fmtTime(r2)}` : ''; })(),
+        grahas: getGrahaPositions(a.julianDay, sr.longitude, sr.longitudeMoon).map(g => ({ name: g.name, skt: g.nameSanskrit, rasi: g.rasi, naksatra: g.naksatra })),
+        childNaksatra: getNaksatraChildSyllable(sr.naksatra, sr.naksatraPada) + '...',
+        childRasi: getRasiChildSyllable(sr.rasiOfMoon),
+        dstSig: getDSTSignature(vd.biasMinutes),
+        ascendant: (() => { const e = new EarthData(); e.longitudeDeg = earth.longitudeDeg; e.latitudeDeg = earth.latitudeDeg; e.offsetUtcHours = earth.offsetUtcHours; return getRasiName(Math.floor(e.getAscendantDegrees(a.julianDay) / 30)); })(),
       };
     };
 
@@ -243,32 +276,34 @@ export default component$(() => {
         </div>
       </div>
 
-      {/* Detail panel */}
-      {selected.value && (
-        <div class="w-80 shrink-0">
-          <div class="bg-white rounded-lg shadow p-5 sticky top-6">
-            <div class="flex justify-between items-start mb-3">
+      {/* Detail panel — full Today-level info */}
+      {selected.value && (() => { const s = selected.value.d; return (
+        <div class="w-96 shrink-0">
+          <div class="bg-white rounded-lg shadow p-5 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto space-y-4">
+            {/* Header + close */}
+            <div class="flex justify-between items-start">
               <div>
-                <p class="text-lg font-bold">{selected.value.d.day} {GregorianDateTime.getMonthName(selected.value.d.month)}</p>
-                <p class="text-sm text-stone-500">{WEEKDAYS[selected.value.d.weekday]}</p>
+                <p class="text-xl font-bold">{s.day} {GregorianDateTime.getMonthName(s.month)} {s.year}</p>
+                <p class="text-sm text-stone-500">{WEEKDAYS[s.weekday]}</p>
+                <Link href="/settings/" class="text-xs text-amber-600 hover:underline">{loadLocation().city} &rarr;</Link>
               </div>
-              <button onClick$={closeDetail} class="text-stone-400 hover:text-stone-600 text-lg">&times;</button>
+              <button onClick$={closeDetail} class="text-stone-400 hover:text-stone-600 text-xl leading-none">&times;</button>
             </div>
 
             {/* Fasting */}
-            {selected.value.d.isFasting && (
-              <div class="bg-yellow-50 border-l-3 border-yellow-400 p-2 mb-3 rounded text-xs">
-                <p class="font-semibold text-yellow-800">{selected.value.d.ekadasiName}</p>
-                <p class="text-yellow-700">{selected.value.d.fastName}</p>
+            {s.isFasting && (
+              <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                <p class="font-semibold text-yellow-800 text-sm">{s.ekadasiName}</p>
+                <p class="text-xs text-yellow-700">{s.fastName}</p>
               </div>
             )}
 
             {/* Festivals */}
-            {selected.value.d.festivals.length > 0 && (
-              <div class="mb-3">
+            {s.festivals.length > 0 && (
+              <div>
                 <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Festivals</h4>
                 <ul class="space-y-0.5">
-                  {selected.value.d.festivals.map((f, i) => (
+                  {s.festivals.map((f, i) => (
                     <li key={i} class="text-xs text-amber-800 bg-amber-50 px-2 py-1 rounded">{f}</li>
                   ))}
                 </ul>
@@ -276,32 +311,78 @@ export default component$(() => {
             )}
 
             {/* Sun times */}
-            <div class="mb-3">
-              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Sun</h4>
-              <div class="grid grid-cols-2 gap-1 text-xs">
-                <span class="text-stone-400">Sunrise</span><span>{selected.value.d.sunrise}</span>
-                <span class="text-stone-400">Sunset</span><span>{selected.value.d.sunset}</span>
-                <span class="text-stone-400">Brahma Muhurta</span><span>{selected.value.d.brahmaMuhurta}</span>
-                <span class="text-stone-400">Gayatri</span><span>{selected.value.d.gayatri}</span>
+            <div>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Sun Times ({s.dstSig})</h4>
+              <div class="grid grid-cols-3 gap-2 text-center">
+                <div><p class="text-lg font-light text-amber-600">{s.sunrise}</p><p class="text-[10px] text-stone-400">Sunrise</p></div>
+                <div><p class="text-lg font-light text-amber-500">{s.noon}</p><p class="text-[10px] text-stone-400">Noon</p></div>
+                <div><p class="text-lg font-light text-orange-600">{s.sunset}</p><p class="text-[10px] text-stone-400">Sunset</p></div>
               </div>
             </div>
 
-            {/* Vedic */}
+            {/* Vedic Day */}
             <div>
-              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Vedic</h4>
-              <div class="grid grid-cols-2 gap-1 text-xs">
-                <span class="text-stone-400">Tithi</span><span>{selected.value.d.tithi}</span>
-                <span class="text-stone-400">Naksatra</span><span>{selected.value.d.naksatra}</span>
-                <span class="text-stone-400">Sun Naksatra</span><span>{selected.value.d.sunNaksatra}</span>
-                <span class="text-stone-400">Yoga</span><span>{selected.value.d.yoga}</span>
-                <span class="text-stone-400">Paksa</span><span>{selected.value.d.paksa}</span>
-                <span class="text-stone-400">Masa</span><span>{selected.value.d.masa}</span>
-                <span class="text-stone-400">Gaurabda</span><span>{selected.value.d.gaurabdaYear}</span>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Vedic Day</h4>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                <span class="text-stone-400">Tithi</span><span>{s.tithi} <span class="text-stone-300">({s.tithiElapse})</span></span>
+                <span class="text-stone-400">Moon Naksatra</span><span>{s.naksatra} <span class="text-stone-300">({s.naksatraElapse})</span></span>
+                <span class="text-stone-400">Sun Naksatra</span><span>{s.sunNaksatra}</span>
+                <span class="text-stone-400">Sun Rasi</span><span>{s.sunRasi}</span>
+                <span class="text-stone-400">Yoga</span><span>{s.yoga} <span class="text-stone-300">({s.yogaElapse})</span></span>
+                <span class="text-stone-400">Paksa</span><span>{s.paksa}</span>
+                <span class="text-stone-400">Masa</span><span>{s.masa}</span>
+                <span class="text-stone-400">Gaurabda</span><span>{s.gaurabdaYear}</span>
+                <span class="text-stone-400">Lagna</span><span>{s.ascendant}</span>
+              </div>
+            </div>
+
+            {/* Muhurta & Sandhya */}
+            <div>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Muhurta & Sandhya</h4>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                <span class="text-stone-400">Brahma Muhurta</span><span>{s.brahmaMuhurta}</span>
+                <span class="text-stone-400">Gayatri</span><span>{s.gayatri}</span>
+                <span class="text-stone-400">Savitri</span><span>{s.savitri}</span>
+                <span class="text-stone-400">Saraswati</span><span>{s.saraswati}</span>
+              </div>
+            </div>
+
+            {/* Kala */}
+            <div>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Kala Periods</h4>
+              <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                <span class="text-red-400">Rahu Kala</span><span class="text-red-600">{s.rahuKala}</span>
+                <span class="text-orange-400">Yama Ghanti</span><span class="text-orange-600">{s.yamaGhanti}</span>
+                <span class="text-amber-400">Guli Kala</span><span class="text-amber-600">{s.guliKala}</span>
+              </div>
+            </div>
+
+            {/* Graha */}
+            <div>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Graha Positions</h4>
+              <div class="grid grid-cols-3 gap-1 text-[10px]">
+                <span class="text-stone-400 font-medium">Graha</span><span class="text-stone-400 font-medium">Rasi</span><span class="text-stone-400 font-medium">Naksatra</span>
+                {s.grahas.map((g, i) => (
+                  <>
+                    <span key={`n${i}`} class="font-medium">{g.skt}</span>
+                    <span key={`r${i}`}>{g.rasi}</span>
+                    <span key={`k${i}`}>{g.naksatra}</span>
+                  </>
+                ))}
+              </div>
+            </div>
+
+            {/* Child names */}
+            <div>
+              <h4 class="text-[10px] font-semibold text-stone-400 uppercase mb-1">Child Name Syllables</h4>
+              <div class="grid grid-cols-2 gap-x-4 text-xs">
+                <span class="text-stone-400">By Naksatra</span><span class="font-medium">{s.childNaksatra}</span>
+                <span class="text-stone-400">By Rasi</span><span class="font-medium">{s.childRasi}</span>
               </div>
             </div>
           </div>
         </div>
-      )}
+      ); })()}
     </div>
   );
 });

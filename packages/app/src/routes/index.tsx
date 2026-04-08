@@ -1,5 +1,5 @@
 import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
-import { type DocumentHead } from '@builder.io/qwik-city';
+import { type DocumentHead, Link } from '@builder.io/qwik-city';
 import {
   loadLocation, toEarthData, todayDate,
   ResultCalendar, getMasaName, getTithiName, getNaksatraName,
@@ -151,7 +151,7 @@ export default component$(() => {
           <div class="bg-white rounded-lg shadow p-5">
             <p class="text-3xl font-light">{data.value.weekday}</p>
             <p class="text-lg text-stone-600">{data.value.date}</p>
-            <p class="text-sm text-stone-400 mt-1">{data.value.location} ({data.value.dstSig})</p>
+            <p class="text-sm text-stone-400 mt-1"><Link href="/settings/" class="text-amber-600 hover:underline">{data.value.location}</Link> ({data.value.dstSig})</p>
           </div>
 
           {/* Fasting / Ekadasi */}
