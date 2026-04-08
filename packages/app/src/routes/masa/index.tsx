@@ -100,42 +100,43 @@ export default component$(() => {
         <button onClick$={goNext} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&rarr;</button>
       </div>
 
-      {/* Timeline visualization */}
+      {/* Timeline — single horizontal strip */}
       <div class="bg-white rounded-lg shadow p-5">
         {/* Month labels */}
-        <div class="relative h-6 mb-1">
+        <div class="relative h-5 mb-1">
           {monthMarkers.map(m => (
-            <div
-              key={m.name}
-              class="absolute text-[10px] text-stone-400 font-medium"
-              style={{ left: `${m.left}%` }}
-            >
+            <div key={m.name} class="absolute text-[10px] text-stone-400 font-medium" style={{ left: `${m.left}%` }}>
               {m.name}
             </div>
           ))}
         </div>
 
-        {/* Month grid lines */}
-        <div class="relative h-2 border-b border-stone-200 mb-4">
+        {/* Month tick marks */}
+        <div class="relative h-1.5 mb-1">
           {monthMarkers.map(m => (
-            <div
-              key={m.name}
-              class="absolute top-0 bottom-0 border-l border-stone-200"
-              style={{ left: `${m.left}%` }}
-            />
+            <div key={m.name} class="absolute top-0 w-px h-full bg-stone-300" style={{ left: `${m.left}%` }} />
           ))}
         </div>
 
-        {/* Masa bars */}
-        <div class="space-y-2">
+        {/* Single continuous masa strip */}
+        <div class="relative h-12 rounded-lg overflow-hidden border border-stone-200">
           {masas.value.map((m, i) => (
-            <div key={i} class="relative h-10">
-              <div
-                class={['absolute top-0 bottom-0 rounded-md flex items-center px-2 overflow-hidden', m.color]}
-                style={{ left: `${m.left}%`, width: `${Math.max(m.width, 2)}%` }}
-              >
-                <span class="text-xs font-medium truncate text-stone-800">{m.masa}</span>
-              </div>
+            <div
+              key={i}
+              class={['absolute top-0 bottom-0 flex items-center justify-center border-r border-white/50 overflow-hidden', m.color]}
+              style={{ left: `${m.left}%`, width: `${Math.max(m.width, 1)}%` }}
+              title={`${m.masa} (${m.startLabel} – ${m.endLabel})`}
+            >
+              <span class="text-[10px] font-semibold text-stone-700 truncate px-0.5">{m.masa}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Date labels below strip */}
+        <div class="relative h-5 mt-0.5">
+          {masas.value.map((m, i) => (
+            <div key={i} class="absolute text-[8px] text-stone-400" style={{ left: `${m.left}%` }}>
+              {m.startLabel}
             </div>
           ))}
         </div>
