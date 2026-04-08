@@ -160,6 +160,13 @@ export default component$(() => {
   const selectDay = $((d: CalDay) => { selected.value = { d }; });
   const closeDetail = $(() => { selected.value = null; });
 
+  const exportPDF = $(async () => {
+    const { exportMonthToPDF } = await import('~/components/export-pdf');
+    const stored = loadLocation();
+    const earth = toEarthData(stored);
+    await exportMonthToPDF(earth, year.value, month.value);
+  });
+
   return (
     <div class="flex gap-6">
       {/* Calendar */}
@@ -170,7 +177,10 @@ export default component$(() => {
             <h2 class="text-2xl font-bold">{monthName.value}</h2>
             {masaLabel.value && <p class="text-sm text-stone-500">{masaLabel.value} Masa</p>}
           </div>
-          <button onClick$={goNext} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&rarr;</button>
+          <div class="flex gap-2">
+            <button onClick$={exportPDF} class="px-3 py-1 rounded bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs">PDF</button>
+            <button onClick$={goNext} class="px-3 py-1 rounded bg-stone-200 hover:bg-stone-300 text-sm">&rarr;</button>
+          </div>
         </div>
 
         <div class="bg-white rounded-lg shadow overflow-hidden">
