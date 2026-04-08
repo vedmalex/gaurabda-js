@@ -148,3 +148,7 @@ export type { GrahaPosition } from './grahas.js';
 // Festival events (ISKCON)
 export { matchFestivals, getFestivalBookNames, getFestivalCount } from './festival-events.js';
 export type { MatchedFestival } from './festival-events.js';
+
+// Rated/Auspicious Events
+export { calculateRatedSlots, defaultRatingConfig } from './rated-events.js';
+export type { RatingConfig, TimeSlotRating } from './rated-events.js';
