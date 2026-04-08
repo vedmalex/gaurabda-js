@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { href: '/calendar/', label: 'Calendar', icon: '\u{1F4C5}' },
   { href: '/events/', label: 'Events', icon: '\u2728' },
   { href: '/masa/', label: 'Masa', icon: '\u{1F319}' },
+  { href: '/search/', label: 'Search', icon: '\u{1F50D}' },
   { href: '/settings/', label: 'Settings', icon: '\u2699' },
 ];
 

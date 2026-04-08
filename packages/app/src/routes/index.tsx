@@ -8,7 +8,7 @@ import {
 } from '~/components/location-store';
 import {
   FastType, getRasiName, calculateSandhyaTimes, calculateBrahmaMuhurta,
-  SunData, KalaType, getGrahaPositions, type GrahaPosition,
+  SunData, KalaType, getGrahaPositions,
   getNaksatraChildSyllable, getRasiChildSyllable,
 } from '@gaurabda/core';
 
