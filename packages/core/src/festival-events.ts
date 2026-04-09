@@ -2,6 +2,7 @@
 // Loads events from events.json and matches by tithi+masa, ekadasi+paksa, sankranti
 
 import eventsData from './data/events.json' with { type: 'json' };
+import eventsShaktiData from './data/events-shakti.json' with { type: 'json' };
 
 interface TithiEvent {
   type: 'T';
@@ -44,7 +45,14 @@ interface EventsDB {
   visible: number[];
 }
 
-const db = eventsData as unknown as EventsDB;
+const dbMain = eventsData as unknown as EventsDB;
+const dbShakti = eventsShaktiData as unknown as EventsDB;
+
+// Merge both databases
+const db: EventsDB = {
+  books: [...dbMain.books, ...dbShakti.books],
+  visible: [...(dbMain.visible ?? []), ...(dbShakti.visible ?? [])],
+};
 
 export interface MatchedFestival {
   name: string;

@@ -121,6 +121,16 @@
           "fast": 7,
           "start": -10000,
           "dayoff": 0
+        },
+        {
+          "type": "T",
+          "name": "Hanuman Jayanti",
+          "tithi": 29,
+          "masa": 11,
+          "fastSubj": "",
+          "fast": 0,
+          "start": -10000,
+          "dayoff": 0
         }
       ]
     },
@@ -430,7 +440,7 @@
         },
         {
           "type": "T",
-          "name": "Siva Ratri",
+          "name": "Maha Sivaratri (Siva Ratri)",
           "tithi": 13,
           "masa": 10,
           "fastSubj": "",
@@ -543,6 +553,46 @@
           "name": "Last day of Bhisma Pancaka",
           "tithi": 29,
           "masa": 6,
+          "fastSubj": "",
+          "fast": 0,
+          "start": -10000,
+          "dayoff": 0
+        },
+        {
+          "type": "T",
+          "name": "Nandotsava",
+          "tithi": 22,
+          "masa": 4,
+          "fastSubj": "",
+          "fast": 0,
+          "start": -10000,
+          "dayoff": 0
+        },
+        {
+          "type": "T",
+          "name": "Srila Prabhupada -- Appearance",
+          "tithi": 22,
+          "masa": 4,
+          "fastSubj": "Srila Prabhupada",
+          "fast": 0,
+          "start": -10000,
+          "dayoff": 0
+        },
+        {
+          "type": "T",
+          "name": "Yashoda Jayanti: Appearance of Mother Yashoda",
+          "tithi": 5,
+          "masa": 10,
+          "fastSubj": "",
+          "fast": 0,
+          "start": -10000,
+          "dayoff": 0
+        },
+        {
+          "type": "T",
+          "name": "Bhadra Purnima (Satyanarayan Puja)",
+          "tithi": 29,
+          "masa": 4,
           "fastSubj": "",
           "fast": 0,
           "start": -10000,
