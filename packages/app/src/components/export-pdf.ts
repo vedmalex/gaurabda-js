@@ -4,7 +4,7 @@
 import {
   EarthData, GregorianDateTime, ResultCalendar, FastType,
   getTithiName, getNaksatraName, getYogaName,
-  matchFestivals,
+  matchFestivalsForDay,
 } from '@gaurabda/core';
 
 export async function exportMonthToPDF(
@@ -57,7 +57,8 @@ export async function exportMonthToPDF(
     const a = day.astrodata;
     const sr = a.sunRise;
 
-    const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, day.sankranti_zodiac);
+    const dayIndex = cal.BEFORE_DAYS + i;
+    const festivals = matchFestivalsForDay(cal.days, dayIndex);
     const festText = festivals.map(f => f.name).join('; ');
 
     const isFasting = day.nFastID === FastType.FAST_EKADASI;

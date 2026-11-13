@@ -7,7 +7,7 @@ import {
   getDSTSignature,
 } from '~/components/location-store';
 import {
-  FastType, matchFestivals, calculateSandhyaTimes, calculateBrahmaMuhurta,
+  FastType, matchFestivalsForDay, calculateSandhyaTimes, calculateBrahmaMuhurta,
   SunData, KalaType, getGrahaPositions, getRasiName, EarthData,
   getNaksatraChildSyllable, getRasiChildSyllable,
 } from '@gaurabda/core';
@@ -94,13 +94,13 @@ export default component$(() => {
       return `${h.toString().padStart(2, '0')}:${mn.toString().padStart(2, '0')}`;
     };
 
-    const buildDay = (vd: (typeof cal.days)[0], isCurrent: boolean): CalDay | null => {
+    const buildDay = (vd: (typeof cal.days)[0], isCurrent: boolean, dayIndex: number): CalDay | null => {
       if (!vd?.date) return null;
       const a = vd.astrodata;
       const sr = a.sunRise;
 
       // Match festivals
-      const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, vd.sankranti_zodiac);
+      const festivals = matchFestivalsForDay(cal.days, dayIndex);
       const festNames = festivals.map(f => f.name);
 
       const sandhya = calculateSandhyaTimes(sr.totalDays, a.sunNoon.totalDays, a.sunSet.totalDays);
@@ -152,14 +152,16 @@ export default component$(() => {
     const padBefore = startWd === 0 ? 6 : startWd - 1;
 
     for (let i = 0; i < padBefore; i++) {
-      const d = buildDay(cal.days[cal.BEFORE_DAYS - padBefore + i], false);
+      const dayIndex = cal.BEFORE_DAYS - padBefore + i;
+      const d = buildDay(cal.days[dayIndex], false, dayIndex);
       if (d) result.push(d);
     }
 
     // Month days
     for (let i = 0; i < cal.pureCount; i++) {
-      const vd = cal.days[cal.BEFORE_DAYS + i];
-      const d = buildDay(vd, true);
+      const dayIndex = cal.BEFORE_DAYS + i;
+      const vd = cal.days[dayIndex];
+      const d = buildDay(vd, true, dayIndex);
       if (d) {
         if (!mainMasa) mainMasa = d.masa;
         result.push(d);
@@ -169,7 +171,8 @@ export default component$(() => {
     // Pad end
     const remaining = (7 - (result.length % 7)) % 7;
     for (let i = 0; i < remaining; i++) {
-      const d = buildDay(cal.days[cal.BEFORE_DAYS + cal.pureCount + i], false);
+      const dayIndex = cal.BEFORE_DAYS + cal.pureCount + i;
+      const d = buildDay(cal.days[dayIndex], false, dayIndex);
       if (d) result.push(d);
     }
 

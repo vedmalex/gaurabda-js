@@ -4,7 +4,7 @@ import {
   loadLocation, toEarthData, GregorianDateTime,
   ResultCalendar, getMasaName, getTithiName, getNaksatraName,
 } from '~/components/location-store';
-import { matchFestivals } from '@gaurabda/core';
+import { matchFestivalsForDay } from '@gaurabda/core';
 
 interface SearchResult {
   date: string;
@@ -56,7 +56,8 @@ export default component$(() => {
       const naksatra = getNaksatraName(sr.naksatra);
 
       // Search festivals
-      const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, day.sankranti_zodiac);
+      const dayIndex = cal.BEFORE_DAYS + i;
+      const festivals = matchFestivalsForDay(cal.days, dayIndex);
       for (const f of festivals) {
         if (f.name.toLowerCase().includes(q)) {
           found.push({ date: dateStr, weekday: wd, tithi, masa, text: f.name, category: 'Festival' });

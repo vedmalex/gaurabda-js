@@ -4,7 +4,7 @@ import {
   loadLocation, toEarthData, getMasaName, GregorianDateTime,
   ResultCalendar, getTithiName,
 } from '~/components/location-store';
-import { ResultMasaList, FastType, matchFestivals } from '@gaurabda/core';
+import { ResultMasaList, FastType, matchFestivalsForDay } from '@gaurabda/core';
 
 interface MasaBar {
   masa: string; year: number; startDay: number; endDay: number;
@@ -111,7 +111,8 @@ export default component$(() => {
         const dayNum = toDayNum(vd.date.day, vd.date.month, vd.date.year);
         // Find which masa this day belongs to
         const mb = masaList.find(bar => dayNum >= bar.startDay && dayNum < bar.endDay);
-        const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, vd.sankranti_zodiac);
+        const dayIndex = cal.BEFORE_DAYS + d;
+        const festivals = matchFestivalsForDay(cal.days, dayIndex);
         monthDays.push({
           day: vd.date.day, month: m,
           masaColor: mb ? MASA_BORDER_COLORS[(mb as any).masaIdx % MASA_BORDER_COLORS.length] : '',

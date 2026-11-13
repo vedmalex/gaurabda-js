@@ -560,26 +560,6 @@
         },
         {
           "type": "T",
-          "name": "Nandotsava",
-          "tithi": 22,
-          "masa": 4,
-          "fastSubj": "",
-          "fast": 0,
-          "start": -10000,
-          "dayoff": 0
-        },
-        {
-          "type": "T",
-          "name": "Srila Prabhupada -- Appearance",
-          "tithi": 22,
-          "masa": 4,
-          "fastSubj": "Srila Prabhupada",
-          "fast": 0,
-          "start": -10000,
-          "dayoff": 0
-        },
-        {
-          "type": "T",
           "name": "Yashoda Jayanti: Appearance of Mother Yashoda",
           "tithi": 5,
           "masa": 10,

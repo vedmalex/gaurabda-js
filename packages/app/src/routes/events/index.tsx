@@ -4,7 +4,7 @@ import {
   loadLocation, toEarthData, GregorianDateTime,
   ResultCalendar, getMasaName, getFastingName,
 } from '~/components/location-store';
-import { CoreEvent, CoreEventType, FastType, matchFestivals } from '@gaurabda/core';
+import { CoreEvent, CoreEventType, FastType, matchFestivalsForDay } from '@gaurabda/core';
 
 type EventCategory = 'all' | 'festival' | 'astro' | 'ekadasi' | 'sankranti';
 
@@ -77,7 +77,8 @@ export default component$(() => {
       const eD = day.date.day, eM = day.date.month, eY = day.date.year;
 
       // Festivals
-      const festivals = matchFestivals(sr.tithi, a.masa, sr.paksa, day.sankranti_zodiac);
+      const dayIndex = cal.BEFORE_DAYS + i;
+      const festivals = matchFestivalsForDay(cal.days, dayIndex);
       for (const f of festivals) {
         rows.push({
           category: 'festival', name: f.name, date: dateStr, time: '',
